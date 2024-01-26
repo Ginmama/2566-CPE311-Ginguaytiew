@@ -3,9 +3,9 @@
 <title>Static Call Graph - [.\Objects\STM32L152RB.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\STM32L152RB.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Fri Jan 26 22:42:25 2024
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Sat Jan 27 00:57:06 2024
 <BR><P>
-<H3>Maximum Stack Usage =         76 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
+<H3>Maximum Stack Usage =         52 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
 __rt_entry_main &rArr; main &rArr; Configure_GPIO &rArr; LL_GPIO_Init
 <P>
@@ -207,7 +207,7 @@ Global Symbols
 <P><STRONG><a name="[7c]"></a>__rt_entry_postsh_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry2.o(.ARM.Collect$$rtentry$$00000009))
 
 <P><STRONG><a name="[47]"></a>__rt_entry_main</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry2.o(.ARM.Collect$$rtentry$$0000000D))
-<BR><BR>[Stack]<UL><LI>Max Depth = 76 + Unknown Stack Size
+<BR><BR>[Stack]<UL><LI>Max Depth = 52 + Unknown Stack Size
 <LI>Call Chain = __rt_entry_main &rArr; main &rArr; Configure_GPIO &rArr; LL_GPIO_Init
 </UL>
 <BR>[Calls]<UL><LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
@@ -441,8 +441,7 @@ Global Symbols
 <P><STRONG><a name="[52]"></a>__aeabi_memcpy4</STRONG> (Thumb, 0 bytes, Stack size 8 bytes, rt_memcpy_w.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = __aeabi_memcpy4
 </UL>
-<BR>[Called By]<UL><LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
-<LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Configure_GPIO
+<BR>[Called By]<UL><LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Configure_GPIO
 </UL>
 
 <P><STRONG><a name="[7f]"></a>__aeabi_memcpy8</STRONG> (Thumb, 0 bytes, Stack size 8 bytes, rt_memcpy_w.o(.text), UNUSED)
@@ -494,7 +493,7 @@ Global Symbols
 
 <P><STRONG><a name="[89]"></a>__semihosting_library_function</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, indicate_semi.o(.text), UNUSED)
 
-<P><STRONG><a name="[50]"></a>Configure_GPIO</STRONG> (Thumb, 50 bytes, Stack size 32 bytes, main.o(i.Configure_GPIO))
+<P><STRONG><a name="[50]"></a>Configure_GPIO</STRONG> (Thumb, 56 bytes, Stack size 32 bytes, main.o(i.Configure_GPIO))
 <BR><BR>[Stack]<UL><LI>Max Depth = 52<LI>Call Chain = Configure_GPIO &rArr; LL_GPIO_Init
 </UL>
 <BR>[Calls]<UL><LI><a href="#[53]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_GPIO_Init
@@ -507,8 +506,7 @@ Global Symbols
 <P><STRONG><a name="[53]"></a>LL_GPIO_Init</STRONG> (Thumb, 324 bytes, Stack size 20 bytes, stm32l1xx_ll_gpio.o(i.LL_GPIO_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 20<LI>Call Chain = LL_GPIO_Init
 </UL>
-<BR>[Called By]<UL><LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
-<LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Configure_GPIO
+<BR>[Called By]<UL><LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Configure_GPIO
 </UL>
 
 <P><STRONG><a name="[56]"></a>LL_Init1msTick</STRONG> (Thumb, 28 bytes, Stack size 0 bytes, stm32l1xx_ll_utils.o(i.LL_Init1msTick))
@@ -538,17 +536,14 @@ Global Symbols
 <P><STRONG><a name="[3a]"></a>SystemInit</STRONG> (Thumb, 82 bytes, Stack size 0 bytes, system_stm32l1xx.o(i.SystemInit))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32l152xb.o(.text)
 </UL>
-<P><STRONG><a name="[48]"></a>main</STRONG> (Thumb, 124 bytes, Stack size 24 bytes, main.o(i.main))
-<BR><BR>[Stack]<UL><LI>Max Depth = 76<LI>Call Chain = main &rArr; Configure_GPIO &rArr; LL_GPIO_Init
+<P><STRONG><a name="[48]"></a>main</STRONG> (Thumb, 72 bytes, Stack size 0 bytes, main.o(i.main))
+<BR><BR>[Stack]<UL><LI>Max Depth = 52<LI>Call Chain = main &rArr; Configure_GPIO &rArr; LL_GPIO_Init
 </UL>
 <BR>[Calls]<UL><LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_mDelay
-<LI><a href="#[53]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_GPIO_Init
 <LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemClock_Config
 <LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Configure_GPIO
-<LI><a href="#[58]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_GPIO_SetOutputPin
-<LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_GPIO_ResetOutputPin
-<LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_AHB1_GRP1_EnableClock
-<LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4
+<LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_GPIO_SetOutputPin
+<LI><a href="#[58]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_GPIO_ResetOutputPin
 </UL>
 <BR>[Called By]<UL><LI><a href="#[47]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_entry_main
 </UL>
@@ -559,15 +554,14 @@ Local Symbols
 <P><STRONG><a name="[51]"></a>LL_AHB1_GRP1_EnableClock</STRONG> (Thumb, 24 bytes, Stack size 8 bytes, main.o(i.LL_AHB1_GRP1_EnableClock))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = LL_AHB1_GRP1_EnableClock
 </UL>
-<BR>[Called By]<UL><LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
-<LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Configure_GPIO
+<BR>[Called By]<UL><LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Configure_GPIO
 </UL>
 
-<P><STRONG><a name="[59]"></a>LL_GPIO_ResetOutputPin</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, main.o(i.LL_GPIO_ResetOutputPin))
+<P><STRONG><a name="[58]"></a>LL_GPIO_ResetOutputPin</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, main.o(i.LL_GPIO_ResetOutputPin))
 <BR><BR>[Called By]<UL><LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[58]"></a>LL_GPIO_SetOutputPin</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, main.o(i.LL_GPIO_SetOutputPin))
+<P><STRONG><a name="[59]"></a>LL_GPIO_SetOutputPin</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, main.o(i.LL_GPIO_SetOutputPin))
 <BR><BR>[Called By]<UL><LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
