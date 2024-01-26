@@ -6,16 +6,51 @@
 #include "stm32l1xx_ll_rcc.h"
 #include "stm32l1xx_ll_pwr.h"
 
+void Configure_GPIO(void);
 void SystemClock_Config(void);
 
-uint32_t seg[4] = {
-    /*SEG1*/ LL_GPIO_PIN_10 | LL_GPIO_PIN_11,
-    /*SEG2*/ LL_GPIO_PIN_2 | LL_GPIO_PIN_11 | LL_GPIO_PIN_12 | LL_GPIO_PIN_14 | LL_GPIO_PIN_15,
-    /*SEG3*/ LL_GPIO_PIN_10 | LL_GPIO_PIN_11,
-    /*SEG4*/ LL_GPIO_PIN_2 | LL_GPIO_PIN_11 | LL_GPIO_PIN_12 | LL_GPIO_PIN_13 | LL_GPIO_PIN_14 | LL_GPIO_PIN_15
+uint32_t seg[10] = {
+    /*0*/ LL_GPIO_PIN_2 | LL_GPIO_PIN_10 | LL_GPIO_PIN_11 | LL_GPIO_PIN_12 | LL_GPIO_PIN_13 | LL_GPIO_PIN_14,
+    /*1*/ LL_GPIO_PIN_10 | LL_GPIO_PIN_11,
+    /*2*/ LL_GPIO_PIN_2 | LL_GPIO_PIN_10 | LL_GPIO_PIN_12 | LL_GPIO_PIN_13 | LL_GPIO_PIN_15,
+    /*3*/ LL_GPIO_PIN_2 | LL_GPIO_PIN_10 | LL_GPIO_PIN_11 | LL_GPIO_PIN_12 | LL_GPIO_PIN_15,
+    /*4*/ LL_GPIO_PIN_10 | LL_GPIO_PIN_11 | LL_GPIO_PIN_14 | LL_GPIO_PIN_15,
+		/*5*/ LL_GPIO_PIN_2 | LL_GPIO_PIN_11 | LL_GPIO_PIN_12 | LL_GPIO_PIN_14 | LL_GPIO_PIN_15,
+		/*6*/ LL_GPIO_PIN_2 | LL_GPIO_PIN_11 | LL_GPIO_PIN_12 | LL_GPIO_PIN_13 | LL_GPIO_PIN_14 | LL_GPIO_PIN_15,
+		/*7*/ LL_GPIO_PIN_2 | LL_GPIO_PIN_10 | LL_GPIO_PIN_11,
+		/*8*/ LL_GPIO_PIN_2 | LL_GPIO_PIN_10 | LL_GPIO_PIN_11 | LL_GPIO_PIN_12 | LL_GPIO_PIN_13 | LL_GPIO_PIN_14 | LL_GPIO_PIN_15,
+		/*9*/ LL_GPIO_PIN_2 | LL_GPIO_PIN_10 | LL_GPIO_PIN_11 | LL_GPIO_PIN_14 | LL_GPIO_PIN_15
 };
-
+uint32_t tempSeg[4] = {0};
 uint32_t digit[4] = {LL_GPIO_PIN_0, LL_GPIO_PIN_1, LL_GPIO_PIN_2, LL_GPIO_PIN_3};
+
+int main(void) {
+    SystemClock_Config();
+    Configure_GPIO();
+
+    while (1) {
+				int number = 4165;
+				if ((number / 1000) > 0) {tempSeg[0] = seg[number / 1000];} // Thousands
+				if (((number % 1000) / 100) > 0) {tempSeg[1] = seg[number % 1000 / 100];} // Hundreds
+				if (((number % 100) / 10) > 0) {tempSeg[2] = seg[(number % 100) / 10];} // Tens
+				if (number % 10 >= 0) {tempSeg[3] = seg[number % 10];} // Units
+        for (uint8_t i = 0; i < 4; ++i) {
+            // Turn off all digits
+            LL_GPIO_ResetOutputPin(GPIOC, LL_GPIO_PIN_0 | LL_GPIO_PIN_1 | LL_GPIO_PIN_2 | LL_GPIO_PIN_3);
+
+            // Turn off all segments
+            LL_GPIO_ResetOutputPin(GPIOB, LL_GPIO_PIN_2 | LL_GPIO_PIN_10 | LL_GPIO_PIN_11 | LL_GPIO_PIN_12 |
+                                                LL_GPIO_PIN_13 | LL_GPIO_PIN_14 | LL_GPIO_PIN_15);
+
+            // Display the segment pattern for the current digit
+            LL_GPIO_SetOutputPin(GPIOB, tempSeg[i]);
+            LL_GPIO_SetOutputPin(GPIOC, digit[i]);
+
+            // Add a delay for visibility (adjust as needed)
+            LL_mDelay(1);
+        }
+    }
+}
 
 void Configure_GPIO(void) {
     LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOB);
@@ -35,29 +70,6 @@ void Configure_GPIO(void) {
     // Configure GPIO for digits
     ltc4727_initstruct.Pin = LL_GPIO_PIN_0 | LL_GPIO_PIN_1 | LL_GPIO_PIN_2 | LL_GPIO_PIN_3;
     LL_GPIO_Init(GPIOC, &ltc4727_initstruct);
-}
-
-int main(void) {
-    SystemClock_Config();
-    Configure_GPIO();
-
-    while (1) {
-        for (uint8_t i = 0; i < 4; ++i) {
-            // Turn off all digits
-            LL_GPIO_ResetOutputPin(GPIOC, LL_GPIO_PIN_0 | LL_GPIO_PIN_1 | LL_GPIO_PIN_2 | LL_GPIO_PIN_3);
-
-            // Turn off all segments
-            LL_GPIO_ResetOutputPin(GPIOB, LL_GPIO_PIN_2 | LL_GPIO_PIN_10 | LL_GPIO_PIN_11 | LL_GPIO_PIN_12 |
-                                                LL_GPIO_PIN_13 | LL_GPIO_PIN_14 | LL_GPIO_PIN_15);
-
-            // Display the segment pattern for the current digit
-            LL_GPIO_SetOutputPin(GPIOB, seg[i]);
-            LL_GPIO_SetOutputPin(GPIOC, digit[i]);
-
-            // Add a delay for visibility (adjust as needed)
-            LL_mDelay(1);
-        }
-    }
 }
 
 void SystemClock_Config(void) {

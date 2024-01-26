@@ -454,6 +454,11 @@
               <FileType>1</FileType>
               <FilePath>..\src\main.c</FilePath>
             </File>
+            <File>
+              <FileName>segDetail.txt</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\segDetail.txt</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
