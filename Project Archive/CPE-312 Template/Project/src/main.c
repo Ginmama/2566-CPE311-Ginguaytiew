@@ -1,4 +1,3 @@
-
 // Basic header-----------------------------------------
 #include "stm32l1xx.h"
 #include "stm32l1xx_ll_system.h"
@@ -65,7 +64,7 @@ void DisplayNumber(int number) {
 		if ((number / 1000) > 0) {temporary_Seg[0] = segType[number / 1000];} // Thousands
 		if (((number % 1000) / 100) > 0) {temporary_Seg[1] = segType[number % 1000 / 100];} // Hundreds
 		if (((number % 100) / 10) > 0) {temporary_Seg[2] = segType[(number % 100) / 10];} // Tens
-		if (number % 10 >= 0) {temporary_Seg[3] = segType[number % 10];} // Units
+		temporary_Seg[3] = segType[number % 10]; // Units
 
     for (uint8_t i = 0; i < 4; ++i) {
         // Turn off all digits and segments
@@ -78,7 +77,7 @@ void DisplayNumber(int number) {
         LL_GPIO_SetOutputPin(GPIOC, digit_Control[i]);
 
         // Add a delay for visibility (adjust as needed)
-        LL_mDelay(1);
+        LL_mDelay(2);
     }
 }
 
