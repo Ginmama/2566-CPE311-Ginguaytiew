@@ -28,8 +28,8 @@ Section Cross References
     main.o(i.main) refers to main.o(i.LL_GPIO_ResetOutputPin) for LL_GPIO_ResetOutputPin
     main.o(i.main) refers to main.o(i.LL_GPIO_SetOutputPin) for LL_GPIO_SetOutputPin
     main.o(i.main) refers to stm32l1xx_ll_utils.o(i.LL_mDelay) for LL_mDelay
-    main.o(i.main) refers to main.o(.data) for seg
-    main.o(i.main) refers to main.o(.bss) for tempSeg
+    main.o(i.main) refers to main.o(.data) for segType
+    main.o(i.main) refers to main.o(.bss) for temporary_Seg
     stm32l1xx_ll_lcd.o(i.LL_LCD_Clear) refers to stm32l1xx_ll_lcd.o(i.LL_LCD_UpdateDisplayRequest) for LL_LCD_UpdateDisplayRequest
     stm32l1xx_ll_lcd.o(i.LL_LCD_DeInit) refers to stm32l1xx_ll_lcd.o(i.LCD_WaitForSynchro) for LCD_WaitForSynchro
     stm32l1xx_ll_lcd.o(i.LL_LCD_DeInit) refers to stm32l1xx_ll_lcd.o(i.LL_LCD_MspDeInit) for LL_LCD_MspDeInit
@@ -648,9 +648,9 @@ Image Symbol Table
     Region$$Table$$Base                      0x08000784   Number         0  anon$$obj.o(Region$$Table)
     Region$$Table$$Limit                     0x080007a4   Number         0  anon$$obj.o(Region$$Table)
     SystemCoreClock                          0x20000000   Data           4  system_stm32l1xx.o(.data)
-    seg                                      0x20000004   Data          40  main.o(.data)
-    digit                                    0x2000002c   Data          16  main.o(.data)
-    tempSeg                                  0x2000003c   Data          16  main.o(.bss)
+    segType                                  0x20000004   Data          40  main.o(.data)
+    digit_Control                            0x2000002c   Data          16  main.o(.data)
+    temporary_Seg                            0x2000003c   Data          16  main.o(.bss)
     __libspace_start                         0x2000004c   Data          96  libspace.o(.bss)
     __temporary_stack_top$libspace           0x200000ac   Data           0  libspace.o(.bss)
 
@@ -771,14 +771,14 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
 
-       706         60         24         56         16     299425   main.o
+       706         60         24         56         16     299459   main.o
         64         26        244          0       1536        908   startup_stm32l152xb.o
        324          0          0          0          0       7395   stm32l1xx_ll_gpio.o
         80          6          0          0          0       6073   stm32l1xx_ll_utils.o
        100         18          0          4          0     270759   system_stm32l1xx.o
 
     ----------------------------------------------------------------------
-      1276        110        300         60       1552     584560   Object Totals
+      1276        110        300         60       1552     584594   Object Totals
          0          0         32          0          0          0   (incl. Generated)
          2          0          0          0          0          0   (incl. Padding)
 
@@ -828,8 +828,8 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-      1656        126        300         60       1652     584544   Grand Totals
-      1656        126        300         60       1652     584544   ELF Image Totals
+      1656        126        300         60       1652     584578   Grand Totals
+      1656        126        300         60       1652     584578   ELF Image Totals
       1656        126        300         60          0          0   ROM Totals
 
 ==============================================================================
