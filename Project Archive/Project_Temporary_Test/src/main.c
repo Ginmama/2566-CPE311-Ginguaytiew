@@ -57,9 +57,7 @@ int main(void)
 											LL_GPIO_PIN_2 | LL_GPIO_PIN_10 | LL_GPIO_PIN_11 |LL_GPIO_PIN_12 | LL_GPIO_PIN_13 | LL_GPIO_PIN_14 };
 	
 	uint32_t seg0 [4] = {0, 0, 0,
-											LL_GPIO_PIN_2 | LL_GPIO_PIN_10 | LL_GPIO_PIN_11 |LL_GPIO_PIN_12 | LL_GPIO_PIN_13 | LL_GPIO_PIN_14};
-
-											
+											LL_GPIO_PIN_2 | LL_GPIO_PIN_10 | LL_GPIO_PIN_11 |LL_GPIO_PIN_12 | LL_GPIO_PIN_13 | LL_GPIO_PIN_14};											
 	uint32_t digit [4] ={LL_GPIO_PIN_0, LL_GPIO_PIN_1, LL_GPIO_PIN_2, LL_GPIO_PIN_3};
 	
 	//configure ltc4727js
@@ -88,7 +86,7 @@ int main(void)
    		LL_GPIO_PIN_13 | LL_GPIO_PIN_14 | LL_GPIO_PIN_15); //Reset all segment (PB2, PB10-PB15)
                     //show number on segment 
 		  switch(ref_value) {
-                                                  case 100:
+        case 100:
 					LL_GPIO_SetOutputPin (GPIOB, seg100[i]);
 					LL_GPIO_SetOutputPin (GPIOC, digit[i]);
 					LL_mDelay(0); //USE for DEBUG increase delay to see what's happenning when 7-seg is lit
@@ -117,15 +115,10 @@ int main(void)
 					LL_GPIO_SetOutputPin (GPIOB, seg0[i]);
 					LL_GPIO_SetOutputPin (GPIOC, digit[i]);
 					LL_mDelay(0); //USE for DEBUG increase delay to see what's happenning when 7-seg is lit
-			
 		}
-	}
-			
-    }
+	}		
+ }
 }
-
-  
-
 
 //PA0 Setup
 void GPIO_Config(void)
