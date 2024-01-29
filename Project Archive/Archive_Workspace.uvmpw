@@ -9,8 +9,6 @@
 
   <project>
     <PathAndName>.\Project_HCSR04_UDS\MDK-ARM\HCSR04_UDS.uvprojx</PathAndName>
-    <NodeIsActive>1</NodeIsActive>
-    <NodeIsExpanded>1</NodeIsExpanded>
   </project>
 
   <project>
@@ -18,7 +16,9 @@
   </project>
 
   <project>
-    <PathAndName>.\Project_Temporary_Test\MDK-ARM\LTC4727_Segment.uvprojx</PathAndName>
+    <PathAndName>.\Project_Temporary_Test\MDK-ARM\Temporary_Test.uvprojx</PathAndName>
+    <NodeIsActive>1</NodeIsActive>
+    <NodeIsExpanded>1</NodeIsExpanded>
   </project>
 
 </ProjectWorkspace>

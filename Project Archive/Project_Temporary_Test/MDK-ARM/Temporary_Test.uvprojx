@@ -455,9 +455,9 @@
               <FilePath>..\src\main.c</FilePath>
             </File>
             <File>
-              <FileName>segDetail.txt</FileName>
+              <FileName>Note.txt</FileName>
               <FileType>5</FileType>
-              <FilePath>.\segDetail.txt</FilePath>
+              <FilePath>.\Note.txt</FilePath>
             </File>
           </Files>
         </Group>
@@ -498,6 +498,11 @@
               <FileName>stm32l1xx_ll_tim.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\Drivers\STM32L1xx_HAL_Driver\Src\stm32l1xx_ll_tim.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32l1xx_ll_exti.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Drivers\STM32L1xx_HAL_Driver\Src\stm32l1xx_ll_exti.c</FilePath>
             </File>
           </Files>
         </Group>

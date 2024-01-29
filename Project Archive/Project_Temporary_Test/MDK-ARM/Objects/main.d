@@ -10,6 +10,8 @@
 .\objects\main.o: ..\..\Drivers\STM32L1xx_HAL_Driver\Inc\stm32l1xx_ll_system.h
 .\objects\main.o: ..\..\Drivers\STM32L1xx_HAL_Driver\Inc\stm32l1xx_ll_bus.h
 .\objects\main.o: ..\..\Drivers\STM32L1xx_HAL_Driver\Inc\stm32l1xx_ll_gpio.h
-.\objects\main.o: ..\..\Drivers\STM32L1xx_HAL_Driver\Inc\stm32l1xx_ll_utils.h
-.\objects\main.o: ..\..\Drivers\STM32L1xx_HAL_Driver\Inc\stm32l1xx_ll_rcc.h
 .\objects\main.o: ..\..\Drivers\STM32L1xx_HAL_Driver\Inc\stm32l1xx_ll_pwr.h
+.\objects\main.o: ..\..\Drivers\STM32L1xx_HAL_Driver\Inc\stm32l1xx_ll_rcc.h
+.\objects\main.o: ..\..\Drivers\STM32L1xx_HAL_Driver\Inc\stm32l1xx_ll_utils.h
+.\objects\main.o: ..\..\Drivers\STM32L1xx_HAL_Driver\Inc\stm32l1xx_ll_tim.h
+.\objects\main.o: ..\..\Drivers\STM32L1xx_HAL_Driver\Inc\stm32l1xx_ll_exti.h
