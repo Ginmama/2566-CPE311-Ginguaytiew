@@ -9,10 +9,15 @@
 
   <project>
     <PathAndName>.\Project_HCSR04_UDS\MDK-ARM\HCSR04_UDS.uvprojx</PathAndName>
+    <NodeIsExpanded>1</NodeIsExpanded>
   </project>
 
   <project>
     <PathAndName>.\Project_LTC4727_Segment\MDK-ARM\LTC4727_Segment.uvprojx</PathAndName>
+  </project>
+
+  <project>
+    <PathAndName>.\Project_Segment with button\MDK-ARM\Segment with button.uvprojx</PathAndName>
     <NodeIsExpanded>1</NodeIsExpanded>
   </project>
 
