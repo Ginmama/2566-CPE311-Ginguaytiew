@@ -8,7 +8,6 @@
 #include "stm32l1xx_ll_tim.h"
 #include "stm32l1xx_ll_exti.h"
 
-uint16_t ref_value = 100; //for change duty cycle
 void TIM_OC_GPIO_Config(void);
 void TIM_OC_Config(void);
 void TIM_BASE_Config(void);
@@ -17,19 +16,23 @@ void GPIO_Config(void);
 void SystemClock_Config(void);
 void DisplayNumber(int number);
 
+uint16_t ref_value = 100; //for change duty cycle
+
 int main(void)
-{
+{	
+		LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOA);
+		LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOB); 
+		LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOC);
+	
 		SystemClock_Config();
 		TIM_OC_Config();
 		PA0_EXTI_Config();
 		GPIO_Config();
+	
 		//Set Enable IC and Set PIN 5 for Reverse motor
 		uint32_t digit[4] = {LL_GPIO_PIN_0, LL_GPIO_PIN_1, LL_GPIO_PIN_2, LL_GPIO_PIN_3};
 
 		//configure ltc4727js
-		LL_AHB1_GRP1_EnableClock (LL_AHB1_GRP1_PERIPH_GPIOB); 
-		LL_AHB1_GRP1_EnableClock (LL_AHB1_GRP1_PERIPH_GPIOC);
-
 		LL_GPIO_InitTypeDef ltc4727_initstruct = {
 				.Mode = LL_GPIO_MODE_OUTPUT,
 				.OutputType = LL_GPIO_OUTPUT_PUSHPULL,
@@ -86,9 +89,6 @@ void DisplayNumber(int number) {
 
 //PA0 Setup
 void GPIO_Config(void) {
-		LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOB);
-		//PA0
-		LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOA);
 		LL_GPIO_InitTypeDef gpio_initstructure = {
 				.Mode = LL_GPIO_MODE_INPUT,
 				.Pin = LL_GPIO_PIN_0,
@@ -119,8 +119,8 @@ void PA0_EXTI_Config(void) {
 void EXTI0_IRQHandler(void) {
 		if(LL_EXTI_IsActiveFlag_0_31(LL_EXTI_LINE_0) == SET) {
 				//check if ref start at 100? :yes duty cycle -20 :no reset value to 100
-				ref_value = ref_value>1?ref_value-20:100;
-				LL_TIM_OC_SetCompareCH2(TIM3,ref_value);
+				ref_value = ref_value > 1 ? ref_value - 20 : 100;
+				LL_TIM_OC_SetCompareCH2(TIM3, ref_value);
 		}
 		LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_0);
 }
@@ -140,7 +140,6 @@ void TIM_BASE_Config(void) {
 }
 //TIMOC_Setup to PIN5
 void TIM_OC_GPIO_Config(void) {
-		LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOB);
 		LL_GPIO_InitTypeDef gpio_initstructure = {
 				.Mode = LL_GPIO_MODE_ALTERNATE,
 				.Alternate = LL_GPIO_AF_2,
