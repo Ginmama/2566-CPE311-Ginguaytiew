@@ -13,6 +13,5 @@
 .\objects\main.o: ..\..\Drivers\STM32L1xx_HAL_Driver\Inc\stm32l1xx_ll_pwr.h
 .\objects\main.o: ..\..\Drivers\STM32L1xx_HAL_Driver\Inc\stm32l1xx_ll_rcc.h
 .\objects\main.o: ..\..\Drivers\STM32L1xx_HAL_Driver\Inc\stm32l1xx_ll_utils.h
-.\objects\main.o: ..\..\Drivers\STM32L1xx_HAL_Driver\Inc\stm32l1xx_ll_tim.h
-.\objects\main.o: ..\..\Drivers\STM32L1xx_HAL_Driver\Inc\stm32l1xx_ll_exti.h
+.\objects\main.o: ..\..\Drivers\STM32L1xx_HAL_Driver\Inc\VL53L0X.h
 .\objects\main.o: ..\..\Drivers\STM32L1xx_HAL_Driver\Inc\stm32l1xx_ll_i2c.h
