@@ -112,7 +112,6 @@ void GPIO_Config(void) {
     LL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 }
 
-//EXTI PA0 Setup
 void PA0_EXTI_Config(void) {
 		LL_APB1_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_SYSCFG);
 		//PA0_EXTI Setup
@@ -128,8 +127,6 @@ void PA0_EXTI_Config(void) {
 		NVIC_EnableIRQ((IRQn_Type)6);
 		NVIC_SetPriority((IRQn_Type)6, 0);
 }
-
-//EXTI for Change duty Cycle by ref_value
 void EXTI0_IRQHandler(void) {
 		if(LL_EXTI_IsActiveFlag_0_31(LL_EXTI_LINE_0) == SET) {
 				ref_value = (GPIOA->IDR & LL_GPIO_PIN_3);

@@ -5,7 +5,7 @@
 
   <Header>### uVision Project, (C) Keil Software</Header>
 
-  <WorkspaceName>C:\Users\uSeR\Desktop\project mocro\2566-CPE311-Ginguaytiew\Project Archive\Archive_Workspace.uvmpw</WorkspaceName>
+  <WorkspaceName>WorkSpace</WorkspaceName>
 
   <project>
     <PathAndName>.\Project_HCSR04_UDS\MDK-ARM\HCSR04_UDS.uvprojx</PathAndName>
@@ -13,16 +13,19 @@
 
   <project>
     <PathAndName>.\Project_LTC4727_Segment\MDK-ARM\LTC4727_Segment.uvprojx</PathAndName>
-    <NodeIsExpanded>1</NodeIsExpanded>
   </project>
 
   <project>
     <PathAndName>.\Project_Segment with button\MDK-ARM\Segment with button.uvprojx</PathAndName>
-    <NodeIsExpanded>1</NodeIsExpanded>
   </project>
 
   <project>
     <PathAndName>.\Project_Temporary_Test\MDK-ARM\Temporary_Test.uvprojx</PathAndName>
+    <NodeIsExpanded>1</NodeIsExpanded>
+  </project>
+
+  <project>
+    <PathAndName>.\Project_Temporary_Test1\MDK-ARM\Temporary_Test.uvprojx</PathAndName>
     <NodeIsActive>1</NodeIsActive>
     <NodeIsExpanded>1</NodeIsExpanded>
   </project>
