@@ -17,11 +17,11 @@
 
   <project>
     <PathAndName>.\Project_Segment with button\MDK-ARM\Segment with button.uvprojx</PathAndName>
+    <NodeIsExpanded>1</NodeIsExpanded>
   </project>
 
   <project>
     <PathAndName>.\Project_VL53L0X_Sensor\MDK-ARM\VL53L0X_Sensor.uvprojx</PathAndName>
-    <NodeIsExpanded>1</NodeIsExpanded>
   </project>
 
   <project>
@@ -31,6 +31,7 @@
   <project>
     <PathAndName>.\Project_Temporary_Test1\MDK-ARM\Temporary_Test.uvprojx</PathAndName>
     <NodeIsActive>1</NodeIsActive>
+    <NodeIsExpanded>1</NodeIsExpanded>
   </project>
 
 </ProjectWorkspace>

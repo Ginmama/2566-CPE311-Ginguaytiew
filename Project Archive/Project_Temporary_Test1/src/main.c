@@ -7,189 +7,53 @@
 #include "stm32l1xx_ll_utils.h"
 #include "stm32l1xx_ll_tim.h"
 #include "stm32l1xx_ll_exti.h"
-#include "stm32l1xx_ll_i2c.h"
 
-void TIM_OC_Config(void);
-void TIM_BASE_Config(void);
-void GPIO_Config(void);
 void SystemClock_Config(void);
+void GPIO_Config(void);
+void TIM_Config(void);
+void PA0_EXTI_Config(void);
 void DisplayNumber(int number);
-#define VL53L0X_ADDRESS 0x29
-void VL53L0X_Init(void);
-void Configure_GPIO(void);
-void VL53L0X_ReadDistance(uint16_t *distance);
-uint16_t laser = 0; //for adjust value
+
+uint16_t ref_value = 9876; //for adjust value
 
 int main(void)
-{   
-    LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOA);
-    LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOB); 
-    LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOC);
-    
-    SystemClock_Config();
-    TIM_OC_Config();
-    GPIO_Config();
-    VL53L0X_Init();
-	  DisplayNumber(0);
-		Configure_GPIO();
+{	
+		LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOA);
+		LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOB); 
+		LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOC);
+	
+		SystemClock_Config();
+		GPIO_Config();
+		TIM_Config();
+		PA0_EXTI_Config();
+		NVIC_EnableIRQ(TIM2_IRQn);
 
-   
-    while (1) {
-        uint16_t distance;
-        VL53L0X_ReadDistance(&distance);
-        laser = distance; // Assign the distance value to laser variable
-        DisplayNumber(laser);
-    }
+		while (1) {
+				DisplayNumber(ref_value);	
+		}
 }
-
-void VL53L0X_Init(void)
-{
-    LL_I2C_InitTypeDef i2c_init_struct = {0};
-    i2c_init_struct.PeripheralMode = LL_I2C_MODE_I2C;
-    i2c_init_struct.ClockSpeed = 100000; // I2C clock speed (100 kHz)
-    i2c_init_struct.DutyCycle = LL_I2C_DUTYCYCLE_2;
-    i2c_init_struct.OwnAddress1 = 0;
-    i2c_init_struct.TypeAcknowledge = LL_I2C_ACK;
-    LL_I2C_Init(I2C1, &i2c_init_struct);
-    LL_I2C_Enable(I2C1);
-}
-
-void VL53L0X_ReadDistance(uint16_t *distance)
-{
-    // Start I2C communication
-    LL_I2C_GenerateStartCondition(I2C1);
-    while (!LL_I2C_IsActiveFlag_SB(I2C1))
-    {
-        // Wait for start condition
-    }
-
-    // Send device address
-    LL_I2C_TransmitData8(I2C1, VL53L0X_ADDRESS);
-    while (!LL_I2C_IsActiveFlag_ADDR(I2C1))
-    {
-        // Wait for address sent
-    }
-
-    // Clear ADDR flag
-    LL_I2C_ClearFlag_ADDR(I2C1);
-
-    // Read data
-    LL_I2C_TransmitData8(I2C1, 0x00); // Send register address to read from
-    while (!LL_I2C_IsActiveFlag_TXE(I2C1))
-    {
-        // Wait for TXE flag
-    }
-
-    LL_I2C_GenerateStartCondition(I2C1); // Restart condition
-    while (!LL_I2C_IsActiveFlag_SB(I2C1))
-    {
-        // Wait for start condition
-    }
-
-    LL_I2C_TransmitData8(I2C1, VL53L0X_ADDRESS | 0x01); // Send device address with read bit
-    while (!LL_I2C_IsActiveFlag_ADDR(I2C1))
-    {
-        // Wait for address sent
-    }
-
-    // Clear ADDR flag
-    LL_I2C_ClearFlag_ADDR(I2C1);
-
-    // Receive data
-    while (!LL_I2C_IsActiveFlag_RXNE(I2C1))
-    {
-        // Wait for RXNE flag
-    }
-    uint8_t dataLSB = LL_I2C_ReceiveData8(I2C1);
-    while (!LL_I2C_IsActiveFlag_RXNE(I2C1))
-    {
-        // Wait for RXNE flag
-    }
-    uint8_t dataMSB = LL_I2C_ReceiveData8(I2C1);
-
-    // Combine data to get distance
-    *distance = (dataMSB << 8) | dataLSB;
-}
-
-void TIM_OC_Config(void) {
-    TIM_BASE_Config();
-    LL_TIM_OC_InitTypeDef tim_oc_initstructure = {
-        .OCState = LL_TIM_OCSTATE_DISABLE,
-        .OCMode = LL_TIM_OCMODE_PWM1,
-        .OCPolarity = LL_TIM_OCPOLARITY_HIGH,
-        .CompareValue = 100
-    };
-    LL_TIM_OC_Init(TIM3, LL_TIM_CHANNEL_CH2, &tim_oc_initstructure);
-    LL_TIM_CC_EnableChannel(TIM3, LL_TIM_CHANNEL_CH2);
-    LL_TIM_EnableCounter(TIM3);
-}
-
-void TIM_BASE_Config(void) {
-    LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM3);
-    LL_TIM_InitTypeDef timbase_initstructure = {
-        .ClockDivision = LL_TIM_CLOCKDIVISION_DIV2,
-        .CounterMode = LL_TIM_COUNTERMODE_UP,
-        .Autoreload = 100 - 1, 
-        .Prescaler = 16000 - 1
-    };
-    LL_TIM_Init(TIM3, &timbase_initstructure);
-    LL_TIM_EnableCounter(TIM3);
-}
-
-void GPIO_Config(void) {
-    // Configure PA3 for SDA (I2C1)
-    LL_GPIO_InitTypeDef gpio_initstructure = {
-        .Mode = LL_GPIO_MODE_ALTERNATE,
-        .Pin = LL_GPIO_PIN_3,
-        .Pull = LL_GPIO_PULL_NO,
-        .Speed = LL_GPIO_SPEED_FREQ_HIGH,
-        .Alternate = LL_GPIO_AF_4 // Choose I2C1 SDA alternate function
-    };
-    LL_GPIO_Init(GPIOA, &gpio_initstructure);
-
-    // Configure PB8 for SCL (I2C1)
-    gpio_initstructure.Pin = LL_GPIO_PIN_8;
-    LL_GPIO_Init(GPIOB, &gpio_initstructure);
-}
-
+  
 void DisplayNumber(int number) {
-    uint32_t segType[10] = {
-        // Store segment pattern 0-9
-        /*0*/ LL_GPIO_PIN_2 | LL_GPIO_PIN_10 | LL_GPIO_PIN_11 | LL_GPIO_PIN_12 | LL_GPIO_PIN_13 | LL_GPIO_PIN_14,
-        /*1*/ LL_GPIO_PIN_10 | LL_GPIO_PIN_11,
-        /*2*/ LL_GPIO_PIN_2 | LL_GPIO_PIN_10 | LL_GPIO_PIN_12 | LL_GPIO_PIN_13 | LL_GPIO_PIN_15,
-        /*3*/ LL_GPIO_PIN_2 | LL_GPIO_PIN_10 | LL_GPIO_PIN_11 | LL_GPIO_PIN_12 | LL_GPIO_PIN_15,
-        /*4*/ LL_GPIO_PIN_10 | LL_GPIO_PIN_11 | LL_GPIO_PIN_14 | LL_GPIO_PIN_15,
-        /*5*/ LL_GPIO_PIN_2 | LL_GPIO_PIN_11 | LL_GPIO_PIN_12 | LL_GPIO_PIN_14 | LL_GPIO_PIN_15,
-        /*6*/ LL_GPIO_PIN_2 | LL_GPIO_PIN_11 | LL_GPIO_PIN_12 | LL_GPIO_PIN_13 | LL_GPIO_PIN_14 | LL_GPIO_PIN_15,
-        /*7*/ LL_GPIO_PIN_2 | LL_GPIO_PIN_10 | LL_GPIO_PIN_11,
-        /*8*/ LL_GPIO_PIN_2 | LL_GPIO_PIN_10 | LL_GPIO_PIN_11 | LL_GPIO_PIN_12 | LL_GPIO_PIN_13 | LL_GPIO_PIN_14 | LL_GPIO_PIN_15,
-        /*9*/ LL_GPIO_PIN_2 | LL_GPIO_PIN_10 | LL_GPIO_PIN_11 | LL_GPIO_PIN_14 | LL_GPIO_PIN_15
-    };
-
-    uint32_t temporary_Seg[4] = {0}; // Store all input number
-    uint32_t digit_Control[4] = {LL_GPIO_PIN_0, LL_GPIO_PIN_1, LL_GPIO_PIN_2, LL_GPIO_PIN_3}; // Store all digit pins
-    
-    // Thousands
-    if (number >= 1000) {
-        temporary_Seg[0] = segType[number / 1000];
-        number %= 1000;
-    }
-
-    // Hundreds
-    if (number >= 100) {
-        temporary_Seg[1] = segType[number / 100];
-        number %= 100;
-    }
-
-    // Tens
-    if (number >= 10) {
-        temporary_Seg[2] = segType[number / 10];
-        number %= 10;
-    }
-
-    // Units
-    temporary_Seg[3] = segType[number];
+		uint32_t segType[10] = {
+				// Store segment pattern 0-9
+				/*0*/ LL_GPIO_PIN_2 | LL_GPIO_PIN_10 | LL_GPIO_PIN_11 | LL_GPIO_PIN_12 | LL_GPIO_PIN_13 | LL_GPIO_PIN_14,
+				/*1*/ LL_GPIO_PIN_10 | LL_GPIO_PIN_11,
+				/*2*/ LL_GPIO_PIN_2 | LL_GPIO_PIN_10 | LL_GPIO_PIN_12 | LL_GPIO_PIN_13 | LL_GPIO_PIN_15,
+				/*3*/ LL_GPIO_PIN_2 | LL_GPIO_PIN_10 | LL_GPIO_PIN_11 | LL_GPIO_PIN_12 | LL_GPIO_PIN_15,
+				/*4*/ LL_GPIO_PIN_10 | LL_GPIO_PIN_11 | LL_GPIO_PIN_14 | LL_GPIO_PIN_15,
+				/*5*/ LL_GPIO_PIN_2 | LL_GPIO_PIN_11 | LL_GPIO_PIN_12 | LL_GPIO_PIN_14 | LL_GPIO_PIN_15,
+				/*6*/ LL_GPIO_PIN_2 | LL_GPIO_PIN_11 | LL_GPIO_PIN_12 | LL_GPIO_PIN_13 | LL_GPIO_PIN_14 | LL_GPIO_PIN_15,
+				/*7*/ LL_GPIO_PIN_2 | LL_GPIO_PIN_10 | LL_GPIO_PIN_11,
+				/*8*/ LL_GPIO_PIN_2 | LL_GPIO_PIN_10 | LL_GPIO_PIN_11 | LL_GPIO_PIN_12 | LL_GPIO_PIN_13 | LL_GPIO_PIN_14 | LL_GPIO_PIN_15,
+				/*9*/ LL_GPIO_PIN_2 | LL_GPIO_PIN_10 | LL_GPIO_PIN_11 | LL_GPIO_PIN_14 | LL_GPIO_PIN_15
+		};
+		uint32_t temporary_Seg[4] = {0}; // Store all input number
+		uint32_t digit_Control[4] = {LL_GPIO_PIN_0, LL_GPIO_PIN_1, LL_GPIO_PIN_2, LL_GPIO_PIN_3}; // Store all digit pins
+		
+		if (number >= 1000) {temporary_Seg[0] = segType[number / 1000];} // Thousands
+		if (number >= 100) {temporary_Seg[1] = segType[number % 1000 / 100];} // Hundreds
+		if (number >= 10) {temporary_Seg[2] = segType[(number % 100) / 10];} // Tens
+		temporary_Seg[3] = segType[number % 10]; // Units
 
     for (uint8_t i = 0; i < 4; ++i) {
         // Turn off all digits and segments
@@ -206,25 +70,110 @@ void DisplayNumber(int number) {
     }
 }
 
-void Configure_GPIO(void) {
-    LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOB);
-    LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOC);
-
-    LL_GPIO_InitTypeDef ltc4727_initstruct = {
+void GPIO_Config(void) {
+    LL_GPIO_InitTypeDef initstruct = {
         .Mode = LL_GPIO_MODE_OUTPUT,
         .OutputType = LL_GPIO_OUTPUT_PUSHPULL,
         .Pull = LL_GPIO_PULL_NO,
         .Speed = LL_GPIO_SPEED_FREQ_VERY_HIGH
     };
 
-    // Configure GPIO for segments
-    ltc4727_initstruct.Pin = LL_GPIO_PIN_2 | LL_GPIO_PIN_10 | LL_GPIO_PIN_11 | LL_GPIO_PIN_12 | LL_GPIO_PIN_13 | LL_GPIO_PIN_14 | LL_GPIO_PIN_15;
-    LL_GPIO_Init(GPIOB, &ltc4727_initstruct);
+    // Configure GPIOB pins
+    initstruct.Pin = LL_GPIO_PIN_2 | LL_GPIO_PIN_10 | LL_GPIO_PIN_11 | LL_GPIO_PIN_12 | LL_GPIO_PIN_13 | LL_GPIO_PIN_14 | LL_GPIO_PIN_15;
+    LL_GPIO_Init(GPIOB, &initstruct);
 
-    // Configure GPIO for digit
-    ltc4727_initstruct.Pin = LL_GPIO_PIN_0 | LL_GPIO_PIN_1 | LL_GPIO_PIN_2 | LL_GPIO_PIN_3;
-    LL_GPIO_Init(GPIOC, &ltc4727_initstruct);
+    // Configure GPIOC pins
+    initstruct.Pin = LL_GPIO_PIN_0 | LL_GPIO_PIN_1 | LL_GPIO_PIN_2 | LL_GPIO_PIN_3; 
+    LL_GPIO_Init(GPIOC, &initstruct);
+    
+    // Configure GPIOA input pin
+    initstruct.Mode = LL_GPIO_MODE_INPUT;
+    initstruct.Pin = LL_GPIO_PIN_0;
+    initstruct.Speed = LL_GPIO_SPEED_FREQ_VERY_HIGH;
+    LL_GPIO_Init(GPIOA, &initstruct);
+
+    // Configure GPIOA alternate function pin
+    initstruct.Mode = LL_GPIO_MODE_ALTERNATE;
+    initstruct.Alternate = LL_GPIO_AF_2;
+    initstruct.Pin = LL_GPIO_PIN_5;
+    LL_GPIO_Init(GPIOA, &initstruct);
+            
+    // Configure another GPIOA input pin
+    initstruct.Mode = LL_GPIO_MODE_INPUT;
+    initstruct.Pin = LL_GPIO_PIN_3;
+    initstruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
+    initstruct.Speed = LL_GPIO_SPEED_FREQ_HIGH;
+    LL_GPIO_Init(GPIOA, &initstruct);
 }
+
+void TIM_Config(void) {
+    // Enable clock for TIM2 and TIM3
+    LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM2);
+    LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM3);
+    
+    // Time-base configuration for TIM3
+    LL_TIM_InitTypeDef tim3_initstructure = {
+        .ClockDivision = LL_TIM_CLOCKDIVISION_DIV2,
+        .CounterMode = LL_TIM_COUNTERMODE_UP,
+        .Autoreload = 100 - 1, // Set ARR to 100 for Compare
+        .Prescaler = 16000 - 1
+    };
+    LL_TIM_Init(TIM3, &tim3_initstructure);
+    LL_TIM_EnableCounter(TIM3);
+    
+    // Time-base configuration for TIM2
+    LL_TIM_InitTypeDef tim2_initstructure = {
+        .Prescaler = 32000 - 1,
+        .Autoreload = 1000 - 1
+    };
+    LL_TIM_Init(TIM2, &tim2_initstructure);
+    
+    // Enable TIM2 update interrupt and start the counter
+    LL_TIM_EnableIT_UPDATE(TIM2);
+    LL_TIM_EnableCounter(TIM2);
+    
+    // Output Compare configuration for TIM3
+    LL_TIM_OC_InitTypeDef tim_oc_initstructure = {
+        .OCState = LL_TIM_OCSTATE_DISABLE,
+        .OCMode = LL_TIM_OCMODE_PWM1,
+        .OCPolarity = LL_TIM_OCPOLARITY_HIGH,
+        .CompareValue = 100
+    };
+    LL_TIM_OC_Init(TIM3, LL_TIM_CHANNEL_CH2, &tim_oc_initstructure);
+    LL_TIM_CC_EnableChannel(TIM3, LL_TIM_CHANNEL_CH2);
+}
+
+void PA0_EXTI_Config(void) {
+		LL_APB1_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_SYSCFG);
+		//PA0_EXTI Setup
+		LL_SYSCFG_SetEXTISource(LL_SYSCFG_EXTI_PORTA, LL_SYSCFG_EXTI_LINE0);
+		LL_EXTI_InitTypeDef PA0_EXTI_InitStruct = {
+				.Line_0_31 = LL_EXTI_LINE_0,
+				.LineCommand = ENABLE,
+				.Mode = LL_EXTI_MODE_IT,
+				.Trigger = LL_EXTI_TRIGGER_RISING
+		};
+		LL_EXTI_Init(&PA0_EXTI_InitStruct);
+		//NVIC Setup
+		NVIC_EnableIRQ((IRQn_Type)6);
+		NVIC_SetPriority((IRQn_Type)6, 0);
+}
+void EXTI0_IRQHandler(void) {
+		if(LL_EXTI_IsActiveFlag_0_31(LL_EXTI_LINE_0) == SET) {
+				ref_value = (GPIOA->IDR & LL_GPIO_PIN_3);
+				LL_TIM_OC_SetCompareCH2(TIM3, ref_value);
+		}
+		LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_0);
+}
+
+void TIM2_IRQHandler(void) {
+    if (LL_TIM_IsActiveFlag_UPDATE(TIM2)) { // Check if interrupt is triggered by Update Event
+        LL_TIM_ClearFlag_UPDATE(TIM2); // Reset Update Event flag
+        // Decrease the value of a variable by 1
+        ref_value--;
+    }
+}
+
 void SystemClock_Config(void) {
     /* Enable ACC64 access and set FLASH latency */
     LL_FLASH_Enable64bitAccess();
