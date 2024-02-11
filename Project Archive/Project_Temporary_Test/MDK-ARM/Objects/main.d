@@ -2,7 +2,7 @@
 .\objects\main.o: ..\..\Drivers\CMSIS\Device\ST\STM32L1xx\Include\stm32l1xx.h
 .\objects\main.o: ..\..\Drivers\CMSIS\Device\ST\STM32L1xx\Include\stm32l152xb.h
 .\objects\main.o: ..\..\Drivers\CMSIS\Include\core_cm3.h
-.\objects\main.o: C:\Program Files\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\main.o: C:\Users\uSeR\Desktop\new\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\main.o: ..\..\Drivers\CMSIS\Include\core_cmInstr.h
 .\objects\main.o: ..\..\Drivers\CMSIS\Include\cmsis_armcc.h
 .\objects\main.o: ..\..\Drivers\CMSIS\Include\core_cmFunc.h
@@ -15,3 +15,4 @@
 .\objects\main.o: ..\..\Drivers\STM32L1xx_HAL_Driver\Inc\stm32l1xx_ll_utils.h
 .\objects\main.o: ..\..\Drivers\STM32L1xx_HAL_Driver\Inc\stm32l1xx_ll_tim.h
 .\objects\main.o: ..\..\Drivers\STM32L1xx_HAL_Driver\Inc\stm32l1xx_ll_exti.h
+.\objects\main.o: ..\..\Drivers\STM32L1xx_HAL_Driver\Inc\stm32l1xx_ll_i2c.h

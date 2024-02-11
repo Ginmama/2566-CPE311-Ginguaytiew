@@ -5,7 +5,7 @@
 
   <Header>### uVision Project, (C) Keil Software</Header>
 
-  <WorkspaceName>WorkSpace</WorkspaceName>
+  <WorkspaceName>C:\Users\uSeR\Desktop\project mocro\2566-CPE311-Ginguaytiew\Project Archive\Archive_Workspace.uvmpw</WorkspaceName>
 
   <project>
     <PathAndName>.\Project_HCSR04_UDS\MDK-ARM\HCSR04_UDS.uvprojx</PathAndName>
@@ -17,7 +17,6 @@
 
   <project>
     <PathAndName>.\Project_Segment with button\MDK-ARM\Segment with button.uvprojx</PathAndName>
-    <NodeIsExpanded>1</NodeIsExpanded>
   </project>
 
   <project>
