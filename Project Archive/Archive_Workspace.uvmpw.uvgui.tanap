@@ -1784,20 +1784,20 @@
       <ActiveTab>0</ActiveTab>
       <Doc>
         <Name>&lt;3&gt;..\src\main.c</Name>
-        <ColumnNumber>1</ColumnNumber>
-        <TopLine>58</TopLine>
-        <CurrentLine>152</CurrentLine>
+        <ColumnNumber>14</ColumnNumber>
+        <TopLine>1</TopLine>
+        <CurrentLine>20</CurrentLine>
         <Folding>1</Folding>
-        <ContractedFolders>52,90,101,118</ContractedFolders>
+        <ContractedFolders>35,72,115,132,140,153,168</ContractedFolders>
         <PaneID>0</PaneID>
       </Doc>
       <Doc>
         <Name>&lt;4&gt;..\src\main.c</Name>
         <ColumnNumber>0</ColumnNumber>
-        <TopLine>11</TopLine>
-        <CurrentLine>154</CurrentLine>
+        <TopLine>1</TopLine>
+        <CurrentLine>1</CurrentLine>
         <Folding>1</Folding>
-        <ContractedFolders>35,72,115,132,140,153,168</ContractedFolders>
+        <ContractedFolders></ContractedFolders>
         <PaneID>0</PaneID>
       </Doc>
       <Doc>
