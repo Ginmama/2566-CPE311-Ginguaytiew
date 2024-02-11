@@ -8,7 +8,6 @@
 #include "stm32l1xx_ll_tim.h"
 #include "stm32l1xx_ll_exti.h"
 
-void TIM_OC_GPIO_Config(void);
 void TIM_OC_Config(void);
 void TIM_BASE_Config(void);
 void PA0_EXTI_Config(void);
@@ -28,22 +27,6 @@ int main(void)
 		TIM_OC_Config();
 		PA0_EXTI_Config();
 		GPIO_Config();
-	
-		//Set Enable IC and Set PIN 5 for Reverse motor
-		uint32_t digit[4] = {LL_GPIO_PIN_0, LL_GPIO_PIN_1, LL_GPIO_PIN_2, LL_GPIO_PIN_3};
-
-		//configure ltc4727js
-		LL_GPIO_InitTypeDef ltc4727_initstruct = {
-				.Mode = LL_GPIO_MODE_OUTPUT,
-				.OutputType = LL_GPIO_OUTPUT_PUSHPULL,
-				.Pull = LL_GPIO_PULL_NO,
-				.Speed = LL_GPIO_SPEED_FREQ_VERY_HIGH,
-				.Pin = LL_GPIO_PIN_2 | LL_GPIO_PIN_10 | LL_GPIO_PIN_11 | LL_GPIO_PIN_12 | LL_GPIO_PIN_13 | LL_GPIO_PIN_14 | LL_GPIO_PIN_15
-		};
-		LL_GPIO_Init(GPIOB, &ltc4727_initstruct);
-
-		ltc4727_initstruct.Pin = LL_GPIO_PIN_0 | LL_GPIO_PIN_1 | LL_GPIO_PIN_2 | LL_GPIO_PIN_3; 
-		LL_GPIO_Init(GPIOC, &ltc4727_initstruct);
 
 		while (1) {
 				DisplayNumber(ref_value);	
@@ -87,16 +70,38 @@ void DisplayNumber(int number) {
     }
 }
 
-//PA0 Setup
 void GPIO_Config(void) {
-		LL_GPIO_InitTypeDef gpio_initstructure = {
+		//configure ltc4727js
+		LL_GPIO_InitTypeDef ltc4727_initstruct = {
+				.Mode = LL_GPIO_MODE_OUTPUT,
+				.OutputType = LL_GPIO_OUTPUT_PUSHPULL,
+				.Pull = LL_GPIO_PULL_NO,
+				.Speed = LL_GPIO_SPEED_FREQ_VERY_HIGH,
+				.Pin = LL_GPIO_PIN_2 | LL_GPIO_PIN_10 | LL_GPIO_PIN_11 | LL_GPIO_PIN_12 | LL_GPIO_PIN_13 | LL_GPIO_PIN_14 | LL_GPIO_PIN_15
+		};
+		LL_GPIO_Init(GPIOB, &ltc4727_initstruct);
+
+		ltc4727_initstruct.Pin = LL_GPIO_PIN_0 | LL_GPIO_PIN_1 | LL_GPIO_PIN_2 | LL_GPIO_PIN_3; 
+		LL_GPIO_Init(GPIOC, &ltc4727_initstruct);
+		
+		LL_GPIO_InitTypeDef gpio_initstructure_input = {
 				.Mode = LL_GPIO_MODE_INPUT,
 				.Pin = LL_GPIO_PIN_0,
 				.Pull = LL_GPIO_PULL_NO,
 				.Speed = LL_GPIO_SPEED_FREQ_VERY_HIGH
 		};
-		LL_GPIO_Init(GPIOA, &gpio_initstructure);
-		
+		LL_GPIO_Init(GPIOA, &gpio_initstructure_input);
+
+		LL_GPIO_InitTypeDef gpio_initstructure_alternate = {
+				.Mode = LL_GPIO_MODE_ALTERNATE,
+				.Alternate = LL_GPIO_AF_2,
+				.OutputType = LL_GPIO_OUTPUT_PUSHPULL,
+				.Pin = LL_GPIO_PIN_5,
+				.Pull = LL_GPIO_PULL_NO,
+				.Speed = LL_GPIO_SPEED_FREQ_VERY_HIGH
+		};
+		LL_GPIO_Init(GPIOA, &gpio_initstructure_alternate);
+				
 		LL_GPIO_InitTypeDef GPIO_InitStruct = {
 				.Mode = LL_GPIO_MODE_INPUT,
 				.Pin = LL_GPIO_PIN_3,
@@ -133,7 +138,6 @@ void EXTI0_IRQHandler(void) {
 		LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_0);
 }
 
-//TIM3_BASE_Config
 void TIM_BASE_Config(void) {
 		LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM3);
 		//Time-base configure
@@ -146,22 +150,10 @@ void TIM_BASE_Config(void) {
 		LL_TIM_Init(TIM3, &timbase_initstructure);
 		LL_TIM_EnableCounter(TIM3);
 }
-//TIMOC_Setup to PIN5
-void TIM_OC_GPIO_Config(void) {
-		LL_GPIO_InitTypeDef gpio_initstructure = {
-				.Mode = LL_GPIO_MODE_ALTERNATE,
-				.Alternate = LL_GPIO_AF_2,
-				.OutputType = LL_GPIO_OUTPUT_PUSHPULL,
-				.Pin = LL_GPIO_PIN_5,
-				.Pull = LL_GPIO_PULL_NO,
-				.Speed = LL_GPIO_SPEED_FREQ_VERY_HIGH
-		};
-		LL_GPIO_Init(GPIOB, &gpio_initstructure);
-}
-//TIM_OC_Config
+
 void TIM_OC_Config() {
-		TIM_OC_GPIO_Config();
 		TIM_BASE_Config();
+	
 		LL_TIM_OC_InitTypeDef tim_oc_initstructure = {
 				.OCState = LL_TIM_OCSTATE_DISABLE,
 				.OCMode = LL_TIM_OCMODE_PWM1,
