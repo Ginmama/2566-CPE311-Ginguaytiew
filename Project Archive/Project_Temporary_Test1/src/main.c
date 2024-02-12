@@ -7,6 +7,7 @@
 #include "stm32l1xx_ll_utils.h"
 #include "stm32l1xx_ll_tim.h"
 #include "stm32l1xx_ll_exti.h"
+#include "math.h"
 
 void SystemClock_Config(void);
 void GPIO_Config(void);
@@ -14,7 +15,7 @@ void TIM_Config(void);
 void PA0_EXTI_Config(void);
 void DisplayNumber(int number);
 
-uint16_t ref_value = 9876; //for adjust value
+uint16_t ref_value = 999; //for adjust value
 
 int main(void)
 {	
@@ -27,6 +28,9 @@ int main(void)
 		TIM_Config();
 		PA0_EXTI_Config();
 		NVIC_EnableIRQ(TIM2_IRQn);
+	
+		save_to(1);
+		ref_value = load_from();
 
 		while (1) {
 				DisplayNumber(ref_value);	
@@ -170,7 +174,7 @@ void TIM2_IRQHandler(void) {
     if (LL_TIM_IsActiveFlag_UPDATE(TIM2)) { // Check if interrupt is triggered by Update Event
         LL_TIM_ClearFlag_UPDATE(TIM2); // Reset Update Event flag
         // Decrease the value of a variable by 1
-        ref_value--;
+        // ref_value--;
     }
 }
 
