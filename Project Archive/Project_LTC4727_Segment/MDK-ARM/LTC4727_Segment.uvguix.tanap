@@ -78,11 +78,11 @@
 
   <WindowSettings>
     <LogicAnalizer>
-      <ShowLACursor>0</ShowLACursor>
-      <ShowSignalInfo>0</ShowSignalInfo>
+      <ShowLACursor>1</ShowLACursor>
+      <ShowSignalInfo>1</ShowSignalInfo>
       <ShowCycles>0</ShowCycles>
-      <LeftSideBarSize>50</LeftSideBarSize>
-      <TimeBaseIndex>16</TimeBaseIndex>
+      <LeftSideBarSize>0</LeftSideBarSize>
+      <TimeBaseIndex>-1</TimeBaseIndex>
     </LogicAnalizer>
   </WindowSettings>
 
@@ -93,8 +93,8 @@
       <flags>2</flags>
       <showCmd>3</showCmd>
       <MinPosition>
-        <xPos>-1</xPos>
-        <yPos>-1</yPos>
+        <xPos>-32000</xPos>
+        <yPos>-32000</yPos>
       </MinPosition>
       <MaxPosition>
         <xPos>-1</xPos>

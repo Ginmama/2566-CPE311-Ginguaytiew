@@ -1,0 +1,14 @@
+pin for segment part
+				LL_GPIO_PIN_2
+				=============
+				||			||
+LL_GPIO_PIN_14	||			|| LL_GPIO_PIN_10
+				||			||
+				||			||
+				=============  LL_GPIO_PIN_15
+				||			||
+LL_GPIO_PIN_13	||			|| LL_GPIO_PIN_11
+				||			||
+				||			||
+				=============
+				LL_GPIO_PIN_12
