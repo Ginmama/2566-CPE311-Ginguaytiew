@@ -38,11 +38,12 @@
 
   <project>
     <PathAndName>.\Project_Temporary_Test1\MDK-ARM\Temporary_Test_1.uvprojx</PathAndName>
+    <NodeIsActive>1</NodeIsActive>
+    <NodeIsExpanded>1</NodeIsExpanded>
   </project>
 
   <project>
     <PathAndName>.\Project_Temporary_Test2\MDK-ARM\Temporary_Test_2.uvprojx</PathAndName>
-    <NodeIsActive>1</NodeIsActive>
     <NodeIsExpanded>1</NodeIsExpanded>
   </project>
 

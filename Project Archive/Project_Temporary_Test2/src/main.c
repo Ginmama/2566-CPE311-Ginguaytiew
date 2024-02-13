@@ -9,7 +9,7 @@
 #include "stm32l1xx_ll_exti.h"
 
 void SystemClock_Config(void);
-void PA4_EXTI_Config(void);
+void PB3_EXTI_Config(void);
 void PA0_EXTI_Config(void);
 
 uint16_t ref_value = 0;
@@ -20,7 +20,7 @@ int main(void) {
 	
 		SystemClock_Config();
 		PA0_EXTI_Config();
-		PA4_EXTI_Config();
+		PB3_EXTI_Config();
 	
 		LL_GPIO_InitTypeDef GPIO_InitStruct = {
 				.Mode = LL_GPIO_MODE_OUTPUT,
@@ -39,22 +39,6 @@ int main(void) {
 		}
 };
 
-void PA4_EXTI_Config(void) {
-    LL_APB1_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_SYSCFG);
-    //PA4_EXTI Setup
-    LL_SYSCFG_SetEXTISource(LL_SYSCFG_EXTI_PORTA, LL_SYSCFG_EXTI_LINE4);
-    LL_EXTI_InitTypeDef PA4_EXTI_InitStruct = {
-        .Line_0_31 = LL_EXTI_LINE_4,
-        .LineCommand = ENABLE,
-        .Mode = LL_EXTI_MODE_IT,
-        .Trigger = LL_EXTI_TRIGGER_RISING
-    };
-    LL_EXTI_Init(&PA4_EXTI_InitStruct);
-    //NVIC Setup
-    NVIC_EnableIRQ(EXTI4_IRQn);
-    NVIC_SetPriority(EXTI4_IRQn, 0);
-}
-
 void PA0_EXTI_Config(void) {
 		LL_APB1_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_SYSCFG);
 		//PA0_EXTI Setup
@@ -69,6 +53,22 @@ void PA0_EXTI_Config(void) {
 		//NVIC Setup
 		NVIC_EnableIRQ((IRQn_Type)6);
 		NVIC_SetPriority((IRQn_Type)6, 0);
+}
+
+void PB3_EXTI_Config(void) {
+    LL_APB1_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_SYSCFG);
+    // PB3_EXTI Setup
+    LL_SYSCFG_SetEXTISource(LL_SYSCFG_EXTI_PORTB, LL_SYSCFG_EXTI_LINE3); // Change EXTI source to Port B and line 3
+    LL_EXTI_InitTypeDef PB3_EXTI_InitStruct = {
+        .Line_0_31 = LL_EXTI_LINE_3, // Change EXTI line to line 3
+        .LineCommand = ENABLE,
+        .Mode = LL_EXTI_MODE_IT,
+        .Trigger = LL_EXTI_TRIGGER_RISING
+    };
+    LL_EXTI_Init(&PB3_EXTI_InitStruct);
+    // NVIC Setup
+    NVIC_EnableIRQ(EXTI3_IRQn); // Change to EXTI3_IRQn
+    NVIC_SetPriority(EXTI3_IRQn, 0);
 }
 
 void EXTI0_IRQHandler(void) {
@@ -87,8 +87,8 @@ void EXTI0_IRQHandler(void) {
 		LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_0);
 }
 
-void EXTI4_IRQHandler(void) {
-    if(LL_EXTI_IsActiveFlag_0_31(LL_EXTI_LINE_4)) {
+void EXTI3_IRQHandler(void) { // Change EXTI4_IRQHandler to EXTI3_IRQHandler
+    if(LL_EXTI_IsActiveFlag_0_31(LL_EXTI_LINE_3)) { // Change to EXTI_LINE_3
 				if(ref_value == 0) {
 						LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_6);
 						LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_7);
@@ -100,7 +100,7 @@ void EXTI4_IRQHandler(void) {
 						ref_value = 0;
 				}
     }
-    LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_4);
+    LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_3); // Change to EXTI_LINE_3
 }
 
 void SystemClock_Config(void) {

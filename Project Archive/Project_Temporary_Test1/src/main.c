@@ -13,9 +13,10 @@ void SystemClock_Config(void);
 void GPIO_Config(void);
 void TIM_Config(void);
 void PA0_EXTI_Config(void);
+void PB3_EXTI_Config(void);
 void DisplayNumber(int number);
 
-uint16_t ref_value = 999; //for adjust value
+uint16_t ref_value = 9999; //for adjust value
 
 int main(void)
 {	
@@ -27,11 +28,11 @@ int main(void)
 		GPIO_Config();
 		TIM_Config();
 		PA0_EXTI_Config();
-		NVIC_EnableIRQ(TIM2_IRQn);
+		PB3_EXTI_Config();
 	
-		save_to(1);
+		/*save_to(1);
 		ref_value = load_from();
-
+*/
 		while (1) {
 				DisplayNumber(ref_value);	
 		}
@@ -164,18 +165,34 @@ void PA0_EXTI_Config(void) {
 }
 void EXTI0_IRQHandler(void) {
 		if(LL_EXTI_IsActiveFlag_0_31(LL_EXTI_LINE_0) == SET) {
-				ref_value = (GPIOA->IDR & LL_GPIO_PIN_3);
-				LL_TIM_OC_SetCompareCH2(TIM3, ref_value);
+				/*ref_value = (GPIOA->IDR & LL_GPIO_PIN_3);
+				LL_TIM_OC_SetCompareCH2(TIM3, ref_value);*/
+				ref_value--;
 		}
 		LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_0);
 }
 
-void TIM2_IRQHandler(void) {
-    if (LL_TIM_IsActiveFlag_UPDATE(TIM2)) { // Check if interrupt is triggered by Update Event
-        LL_TIM_ClearFlag_UPDATE(TIM2); // Reset Update Event flag
-        // Decrease the value of a variable by 1
-        // ref_value--;
+void PB3_EXTI_Config(void) {
+    LL_APB1_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_SYSCFG);
+    // PB3_EXTI Setup
+    LL_SYSCFG_SetEXTISource(LL_SYSCFG_EXTI_PORTB, LL_SYSCFG_EXTI_LINE3); // Change EXTI source to Port B and line 3
+    LL_EXTI_InitTypeDef PB3_EXTI_InitStruct = {
+        .Line_0_31 = LL_EXTI_LINE_3, // Change EXTI line to line 3
+        .LineCommand = ENABLE,
+        .Mode = LL_EXTI_MODE_IT,
+        .Trigger = LL_EXTI_TRIGGER_RISING
+    };
+    LL_EXTI_Init(&PB3_EXTI_InitStruct);
+    // NVIC Setup
+    NVIC_EnableIRQ(EXTI3_IRQn); // Change to EXTI3_IRQn
+    NVIC_SetPriority(EXTI3_IRQn, 0);
+}
+
+void EXTI3_IRQHandler(void) { // Change EXTI4_IRQHandler to EXTI3_IRQHandler
+    if(LL_EXTI_IsActiveFlag_0_31(LL_EXTI_LINE_3)) { // Change to EXTI_LINE_3
+				ref_value--;
     }
+    LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_3); // Change to EXTI_LINE_3
 }
 
 void SystemClock_Config(void) {

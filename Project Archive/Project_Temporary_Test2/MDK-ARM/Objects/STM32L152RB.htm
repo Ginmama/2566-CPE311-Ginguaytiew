@@ -3,11 +3,11 @@
 <title>Static Call Graph - [.\Objects\STM32L152RB.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\STM32L152RB.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Wed Feb 14 00:52:52 2024
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Wed Feb 14 03:26:42 2024
 <BR><P>
 <H3>Maximum Stack Usage =         56 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
-__rt_entry_main &rArr; main &rArr; PA4_EXTI_Config &rArr; LL_EXTI_Init
+__rt_entry_main &rArr; main &rArr; PB3_EXTI_Config &rArr; LL_EXTI_Init
 <P>
 <H3>
 Functions with no stack information
@@ -49,8 +49,8 @@ Function Pointers
  <LI><a href="#[35]">EXTI15_10_IRQHandler</a> from startup_stm32l152xb.o(.text) referenced from startup_stm32l152xb.o(RESET)
  <LI><a href="#[14]">EXTI1_IRQHandler</a> from startup_stm32l152xb.o(.text) referenced from startup_stm32l152xb.o(RESET)
  <LI><a href="#[15]">EXTI2_IRQHandler</a> from startup_stm32l152xb.o(.text) referenced from startup_stm32l152xb.o(RESET)
- <LI><a href="#[16]">EXTI3_IRQHandler</a> from startup_stm32l152xb.o(.text) referenced from startup_stm32l152xb.o(RESET)
- <LI><a href="#[17]">EXTI4_IRQHandler</a> from main.o(i.EXTI4_IRQHandler) referenced from startup_stm32l152xb.o(RESET)
+ <LI><a href="#[16]">EXTI3_IRQHandler</a> from main.o(i.EXTI3_IRQHandler) referenced from startup_stm32l152xb.o(RESET)
+ <LI><a href="#[17]">EXTI4_IRQHandler</a> from startup_stm32l152xb.o(.text) referenced from startup_stm32l152xb.o(RESET)
  <LI><a href="#[24]">EXTI9_5_IRQHandler</a> from startup_stm32l152xb.o(.text) referenced from startup_stm32l152xb.o(RESET)
  <LI><a href="#[11]">FLASH_IRQHandler</a> from startup_stm32l152xb.o(.text) referenced from startup_stm32l152xb.o(RESET)
  <LI><a href="#[5]">HardFault_Handler</a> from startup_stm32l152xb.o(.text) referenced from startup_stm32l152xb.o(RESET)
@@ -208,7 +208,7 @@ Global Symbols
 
 <P><STRONG><a name="[47]"></a>__rt_entry_main</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry2.o(.ARM.Collect$$rtentry$$0000000D))
 <BR><BR>[Stack]<UL><LI>Max Depth = 56 + Unknown Stack Size
-<LI>Call Chain = __rt_entry_main &rArr; main &rArr; PA4_EXTI_Config &rArr; LL_EXTI_Init
+<LI>Call Chain = __rt_entry_main &rArr; main &rArr; PB3_EXTI_Config &rArr; LL_EXTI_Init
 </UL>
 <BR>[Calls]<UL><LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[49]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;exit
@@ -338,7 +338,7 @@ Global Symbols
 <P><STRONG><a name="[15]"></a>EXTI2_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_stm32l152xb.o(.text))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32l152xb.o(RESET)
 </UL>
-<P><STRONG><a name="[16]"></a>EXTI3_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_stm32l152xb.o(.text))
+<P><STRONG><a name="[17]"></a>EXTI4_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_stm32l152xb.o(.text))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32l152xb.o(RESET)
 </UL>
 <P><STRONG><a name="[24]"></a>EXTI9_5_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_stm32l152xb.o(.text))
@@ -497,8 +497,8 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32l152xb.o(RESET)
 </UL>
-<P><STRONG><a name="[17]"></a>EXTI4_IRQHandler</STRONG> (Thumb, 70 bytes, Stack size 8 bytes, main.o(i.EXTI4_IRQHandler))
-<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = EXTI4_IRQHandler
+<P><STRONG><a name="[16]"></a>EXTI3_IRQHandler</STRONG> (Thumb, 70 bytes, Stack size 8 bytes, main.o(i.EXTI3_IRQHandler))
+<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = EXTI3_IRQHandler
 </UL>
 <BR>[Calls]<UL><LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_GPIO_SetOutputPin
 <LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_GPIO_ResetOutputPin
@@ -517,7 +517,7 @@ Global Symbols
 <LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_EXTI_DisableIT_0_31
 <LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_EXTI_DisableEvent_0_31
 </UL>
-<BR>[Called By]<UL><LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PA4_EXTI_Config
+<BR>[Called By]<UL><LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PB3_EXTI_Config
 <LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PA0_EXTI_Config
 </UL>
 
@@ -547,8 +547,8 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[60]"></a>PA4_EXTI_Config</STRONG> (Thumb, 46 bytes, Stack size 16 bytes, main.o(i.PA4_EXTI_Config))
-<BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = PA4_EXTI_Config &rArr; LL_EXTI_Init
+<P><STRONG><a name="[60]"></a>PB3_EXTI_Config</STRONG> (Thumb, 48 bytes, Stack size 16 bytes, main.o(i.PB3_EXTI_Config))
+<BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = PB3_EXTI_Config &rArr; LL_EXTI_Init
 </UL>
 <BR>[Calls]<UL><LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_EXTI_Init
 <LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NVIC_SetPriority
@@ -574,11 +574,11 @@ Global Symbols
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32l152xb.o(.text)
 </UL>
 <P><STRONG><a name="[48]"></a>main</STRONG> (Thumb, 60 bytes, Stack size 24 bytes, main.o(i.main))
-<BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = main &rArr; PA4_EXTI_Config &rArr; LL_EXTI_Init
+<BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = main &rArr; PB3_EXTI_Config &rArr; LL_EXTI_Init
 </UL>
 <BR>[Calls]<UL><LI><a href="#[67]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_GPIO_Init
 <LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemClock_Config
-<LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PA4_EXTI_Config
+<LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PB3_EXTI_Config
 <LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PA0_EXTI_Config
 <LI><a href="#[65]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_AHB1_GRP1_EnableClock
 <LI><a href="#[66]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4
@@ -599,27 +599,27 @@ Local Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = LL_APB1_GRP1_EnableClock
 </UL>
 <BR>[Called By]<UL><LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemClock_Config
-<LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PA4_EXTI_Config
+<LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PB3_EXTI_Config
 <LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PA0_EXTI_Config
 </UL>
 
 <P><STRONG><a name="[53]"></a>LL_EXTI_ClearFlag_0_31</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, main.o(i.LL_EXTI_ClearFlag_0_31))
-<BR><BR>[Called By]<UL><LI><a href="#[17]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EXTI4_IRQHandler
+<BR><BR>[Called By]<UL><LI><a href="#[16]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EXTI3_IRQHandler
 <LI><a href="#[13]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EXTI0_IRQHandler
 </UL>
 
 <P><STRONG><a name="[50]"></a>LL_EXTI_IsActiveFlag_0_31</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, main.o(i.LL_EXTI_IsActiveFlag_0_31))
-<BR><BR>[Called By]<UL><LI><a href="#[17]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EXTI4_IRQHandler
+<BR><BR>[Called By]<UL><LI><a href="#[16]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EXTI3_IRQHandler
 <LI><a href="#[13]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EXTI0_IRQHandler
 </UL>
 
 <P><STRONG><a name="[52]"></a>LL_GPIO_ResetOutputPin</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, main.o(i.LL_GPIO_ResetOutputPin))
-<BR><BR>[Called By]<UL><LI><a href="#[17]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EXTI4_IRQHandler
+<BR><BR>[Called By]<UL><LI><a href="#[16]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EXTI3_IRQHandler
 <LI><a href="#[13]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EXTI0_IRQHandler
 </UL>
 
 <P><STRONG><a name="[51]"></a>LL_GPIO_SetOutputPin</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, main.o(i.LL_GPIO_SetOutputPin))
-<BR><BR>[Called By]<UL><LI><a href="#[17]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EXTI4_IRQHandler
+<BR><BR>[Called By]<UL><LI><a href="#[16]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EXTI3_IRQHandler
 <LI><a href="#[13]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EXTI0_IRQHandler
 </UL>
 
@@ -630,19 +630,19 @@ Local Symbols
 <P><STRONG><a name="[5d]"></a>LL_SYSCFG_SetEXTISource</STRONG> (Thumb, 40 bytes, Stack size 8 bytes, main.o(i.LL_SYSCFG_SetEXTISource))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = LL_SYSCFG_SetEXTISource
 </UL>
-<BR>[Called By]<UL><LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PA4_EXTI_Config
+<BR>[Called By]<UL><LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PB3_EXTI_Config
 <LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PA0_EXTI_Config
 </UL>
 
 <P><STRONG><a name="[5e]"></a>NVIC_EnableIRQ</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, main.o(i.NVIC_EnableIRQ))
-<BR><BR>[Called By]<UL><LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PA4_EXTI_Config
+<BR><BR>[Called By]<UL><LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PB3_EXTI_Config
 <LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PA0_EXTI_Config
 </UL>
 
 <P><STRONG><a name="[5f]"></a>NVIC_SetPriority</STRONG> (Thumb, 32 bytes, Stack size 8 bytes, main.o(i.NVIC_SetPriority))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = NVIC_SetPriority
 </UL>
-<BR>[Called By]<UL><LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PA4_EXTI_Config
+<BR>[Called By]<UL><LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PB3_EXTI_Config
 <LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PA0_EXTI_Config
 </UL>
 
