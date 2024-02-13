@@ -3,11 +3,11 @@
 <title>Static Call Graph - [.\Objects\STM32L152RB.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\STM32L152RB.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Mon Feb 12 01:06:09 2024
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Tue Feb 13 22:57:39 2024
 <BR><P>
 <H3>Maximum Stack Usage =         96 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
-__rt_entry_main &rArr; main &rArr; DisplayNumber &rArr; LL_mDelay
+__rt_entry_main &rArr; main &rArr; TIM_Config &rArr; LL_TIM_OC_Init &rArr; OC4Config
 <P>
 <H3>
 Functions with no stack information
@@ -75,7 +75,7 @@ Function Pointers
  <LI><a href="#[f]">TAMPER_STAMP_IRQHandler</a> from startup_stm32l152xb.o(.text) referenced from startup_stm32l152xb.o(RESET)
  <LI><a href="#[27]">TIM10_IRQHandler</a> from startup_stm32l152xb.o(.text) referenced from startup_stm32l152xb.o(RESET)
  <LI><a href="#[28]">TIM11_IRQHandler</a> from startup_stm32l152xb.o(.text) referenced from startup_stm32l152xb.o(RESET)
- <LI><a href="#[29]">TIM2_IRQHandler</a> from startup_stm32l152xb.o(.text) referenced from startup_stm32l152xb.o(RESET)
+ <LI><a href="#[29]">TIM2_IRQHandler</a> from main.o(i.TIM2_IRQHandler) referenced from startup_stm32l152xb.o(RESET)
  <LI><a href="#[2a]">TIM3_IRQHandler</a> from startup_stm32l152xb.o(.text) referenced from startup_stm32l152xb.o(RESET)
  <LI><a href="#[2b]">TIM4_IRQHandler</a> from startup_stm32l152xb.o(.text) referenced from startup_stm32l152xb.o(RESET)
  <LI><a href="#[38]">TIM6_IRQHandler</a> from startup_stm32l152xb.o(.text) referenced from startup_stm32l152xb.o(RESET)
@@ -208,7 +208,7 @@ Global Symbols
 
 <P><STRONG><a name="[47]"></a>__rt_entry_main</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry2.o(.ARM.Collect$$rtentry$$0000000D))
 <BR><BR>[Stack]<UL><LI>Max Depth = 96 + Unknown Stack Size
-<LI>Call Chain = __rt_entry_main &rArr; main &rArr; DisplayNumber &rArr; LL_mDelay
+<LI>Call Chain = __rt_entry_main &rArr; main &rArr; TIM_Config &rArr; LL_TIM_OC_Init &rArr; OC4Config
 </UL>
 <BR>[Calls]<UL><LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[49]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;exit
@@ -392,9 +392,6 @@ Global Symbols
 <P><STRONG><a name="[28]"></a>TIM11_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_stm32l152xb.o(.text))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32l152xb.o(RESET)
 </UL>
-<P><STRONG><a name="[29]"></a>TIM2_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_stm32l152xb.o(.text))
-<BR>[Address Reference Count : 1]<UL><LI> startup_stm32l152xb.o(RESET)
-</UL>
 <P><STRONG><a name="[2a]"></a>TIM3_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_stm32l152xb.o(.text))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32l152xb.o(RESET)
 </UL>
@@ -533,18 +530,18 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_Config
 </UL>
 
-<P><STRONG><a name="[67]"></a>LL_Init1msTick</STRONG> (Thumb, 28 bytes, Stack size 0 bytes, stm32l1xx_ll_utils.o(i.LL_Init1msTick))
-<BR><BR>[Called By]<UL><LI><a href="#[65]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemClock_Config
+<P><STRONG><a name="[68]"></a>LL_Init1msTick</STRONG> (Thumb, 28 bytes, Stack size 0 bytes, stm32l1xx_ll_utils.o(i.LL_Init1msTick))
+<BR><BR>[Called By]<UL><LI><a href="#[66]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemClock_Config
 </UL>
 
-<P><STRONG><a name="[68]"></a>LL_SetSystemCoreClock</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, stm32l1xx_ll_utils.o(i.LL_SetSystemCoreClock))
-<BR><BR>[Called By]<UL><LI><a href="#[65]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemClock_Config
+<P><STRONG><a name="[69]"></a>LL_SetSystemCoreClock</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, stm32l1xx_ll_utils.o(i.LL_SetSystemCoreClock))
+<BR><BR>[Called By]<UL><LI><a href="#[66]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemClock_Config
 </UL>
 
-<P><STRONG><a name="[6a]"></a>LL_TIM_Init</STRONG> (Thumb, 112 bytes, Stack size 8 bytes, stm32l1xx_ll_tim.o(i.LL_TIM_Init))
+<P><STRONG><a name="[6b]"></a>LL_TIM_Init</STRONG> (Thumb, 112 bytes, Stack size 8 bytes, stm32l1xx_ll_tim.o(i.LL_TIM_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = LL_TIM_Init
 </UL>
-<BR>[Called By]<UL><LI><a href="#[69]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_BASE_Config
+<BR>[Called By]<UL><LI><a href="#[6a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_Config
 </UL>
 
 <P><STRONG><a name="[5e]"></a>LL_TIM_OC_Init</STRONG> (Thumb, 92 bytes, Stack size 24 bytes, stm32l1xx_ll_tim.o(i.LL_TIM_OC_Init))
@@ -555,7 +552,7 @@ Global Symbols
 <LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OC2Config
 <LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OC1Config
 </UL>
-<BR>[Called By]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_OC_Config
+<BR>[Called By]<UL><LI><a href="#[6a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_Config
 </UL>
 
 <P><STRONG><a name="[54]"></a>LL_mDelay</STRONG> (Thumb, 40 bytes, Stack size 8 bytes, stm32l1xx_ll_utils.o(i.LL_mDelay))
@@ -564,21 +561,22 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DisplayNumber
 </UL>
 
-<P><STRONG><a name="[63]"></a>PA0_EXTI_Config</STRONG> (Thumb, 120 bytes, Stack size 16 bytes, main.o(i.PA0_EXTI_Config))
+<P><STRONG><a name="[63]"></a>PA0_EXTI_Config</STRONG> (Thumb, 108 bytes, Stack size 16 bytes, main.o(i.PA0_EXTI_Config))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = PA0_EXTI_Config &rArr; LL_EXTI_Init
 </UL>
 <BR>[Calls]<UL><LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_EXTI_Init
+<LI><a href="#[65]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NVIC_EnableIRQ
 <LI><a href="#[64]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_APB1_GRP1_EnableClock
 </UL>
 <BR>[Called By]<UL><LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[65]"></a>SystemClock_Config</STRONG> (Thumb, 282 bytes, Stack size 8 bytes, main.o(i.SystemClock_Config))
+<P><STRONG><a name="[66]"></a>SystemClock_Config</STRONG> (Thumb, 282 bytes, Stack size 8 bytes, main.o(i.SystemClock_Config))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = SystemClock_Config &rArr; LL_APB1_GRP1_EnableClock
 </UL>
-<BR>[Calls]<UL><LI><a href="#[68]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_SetSystemCoreClock
-<LI><a href="#[67]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_Init1msTick
-<LI><a href="#[66]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_RCC_HSI_IsReady
+<BR>[Calls]<UL><LI><a href="#[69]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_SetSystemCoreClock
+<LI><a href="#[68]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_Init1msTick
+<LI><a href="#[67]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_RCC_HSI_IsReady
 <LI><a href="#[64]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_APB1_GRP1_EnableClock
 </UL>
 <BR>[Called By]<UL><LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
@@ -587,34 +585,29 @@ Global Symbols
 <P><STRONG><a name="[3a]"></a>SystemInit</STRONG> (Thumb, 82 bytes, Stack size 0 bytes, system_stm32l1xx.o(i.SystemInit))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32l152xb.o(.text)
 </UL>
-<P><STRONG><a name="[69]"></a>TIM_BASE_Config</STRONG> (Thumb, 32 bytes, Stack size 24 bytes, main.o(i.TIM_BASE_Config))
-<BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = TIM_BASE_Config &rArr; LL_TIM_Init
+<P><STRONG><a name="[29]"></a>TIM2_IRQHandler</STRONG> (Thumb, 40 bytes, Stack size 0 bytes, main.o(i.TIM2_IRQHandler))
+<BR>[Address Reference Count : 1]<UL><LI> startup_stm32l152xb.o(RESET)
 </UL>
-<BR>[Calls]<UL><LI><a href="#[6a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_TIM_Init
-<LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_TIM_EnableCounter
-<LI><a href="#[64]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_APB1_GRP1_EnableClock
-</UL>
-<BR>[Called By]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_OC_Config
-</UL>
-
-<P><STRONG><a name="[6c]"></a>TIM_OC_Config</STRONG> (Thumb, 46 bytes, Stack size 24 bytes, main.o(i.TIM_OC_Config))
-<BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = TIM_OC_Config &rArr; LL_TIM_OC_Init &rArr; OC4Config
+<P><STRONG><a name="[6a]"></a>TIM_Config</STRONG> (Thumb, 138 bytes, Stack size 56 bytes, main.o(i.TIM_Config))
+<BR><BR>[Stack]<UL><LI>Max Depth = 96<LI>Call Chain = TIM_Config &rArr; LL_TIM_OC_Init &rArr; OC4Config
 </UL>
 <BR>[Calls]<UL><LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_TIM_OC_Init
-<LI><a href="#[69]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_BASE_Config
-<LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_TIM_EnableCounter
+<LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_TIM_Init
+<LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_TIM_EnableCounter
+<LI><a href="#[64]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_APB1_GRP1_EnableClock
 </UL>
 <BR>[Called By]<UL><LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[48]"></a>main</STRONG> (Thumb, 46 bytes, Stack size 0 bytes, main.o(i.main))
-<BR><BR>[Stack]<UL><LI>Max Depth = 96<LI>Call Chain = main &rArr; DisplayNumber &rArr; LL_mDelay
+<P><STRONG><a name="[48]"></a>main</STRONG> (Thumb, 52 bytes, Stack size 0 bytes, main.o(i.main))
+<BR><BR>[Stack]<UL><LI>Max Depth = 96<LI>Call Chain = main &rArr; TIM_Config &rArr; LL_TIM_OC_Init &rArr; OC4Config
 </UL>
-<BR>[Calls]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_OC_Config
-<LI><a href="#[65]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemClock_Config
+<BR>[Calls]<UL><LI><a href="#[6a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_Config
+<LI><a href="#[66]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemClock_Config
 <LI><a href="#[63]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PA0_EXTI_Config
 <LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_Config
 <LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DisplayNumber
+<LI><a href="#[65]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NVIC_EnableIRQ
 <LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_AHB1_GRP1_EnableClock
 </UL>
 <BR>[Called By]<UL><LI><a href="#[47]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_entry_main
@@ -632,8 +625,8 @@ Local Symbols
 <P><STRONG><a name="[64]"></a>LL_APB1_GRP1_EnableClock</STRONG> (Thumb, 24 bytes, Stack size 8 bytes, main.o(i.LL_APB1_GRP1_EnableClock))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = LL_APB1_GRP1_EnableClock
 </UL>
-<BR>[Called By]<UL><LI><a href="#[69]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_BASE_Config
-<LI><a href="#[65]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemClock_Config
+<BR>[Called By]<UL><LI><a href="#[6a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_Config
+<LI><a href="#[66]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemClock_Config
 <LI><a href="#[63]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PA0_EXTI_Config
 </UL>
 
@@ -645,13 +638,17 @@ Local Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DisplayNumber
 </UL>
 
-<P><STRONG><a name="[66]"></a>LL_RCC_HSI_IsReady</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, main.o(i.LL_RCC_HSI_IsReady))
-<BR><BR>[Called By]<UL><LI><a href="#[65]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemClock_Config
+<P><STRONG><a name="[67]"></a>LL_RCC_HSI_IsReady</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, main.o(i.LL_RCC_HSI_IsReady))
+<BR><BR>[Called By]<UL><LI><a href="#[66]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemClock_Config
 </UL>
 
-<P><STRONG><a name="[6b]"></a>LL_TIM_EnableCounter</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, main.o(i.LL_TIM_EnableCounter))
-<BR><BR>[Called By]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_OC_Config
-<LI><a href="#[69]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_BASE_Config
+<P><STRONG><a name="[6c]"></a>LL_TIM_EnableCounter</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, main.o(i.LL_TIM_EnableCounter))
+<BR><BR>[Called By]<UL><LI><a href="#[6a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_Config
+</UL>
+
+<P><STRONG><a name="[65]"></a>NVIC_EnableIRQ</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, main.o(i.NVIC_EnableIRQ))
+<BR><BR>[Called By]<UL><LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+<LI><a href="#[63]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PA0_EXTI_Config
 </UL>
 
 <P><STRONG><a name="[5f]"></a>OC1Config</STRONG> (Thumb, 74 bytes, Stack size 16 bytes, stm32l1xx_ll_tim.o(i.OC1Config))
