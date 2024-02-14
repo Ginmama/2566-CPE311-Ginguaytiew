@@ -8,99 +8,69 @@
 #include "stm32l1xx_ll_tim.h"
 #include "stm32l1xx_ll_exti.h"
 
-void SystemClock_Config(void);
-void PD2_EXTI_Config(void);
-void PA0_EXTI_Config(void);
+#define E_O6 (uint16_t)1318
+#define F_O6 (uint16_t)1396.9
+#define TIMx_PSC 3
 
-uint16_t ref_value = 0;
+#define ARR_CALCULATE(N) (SystemCoreClock) / ((TIMx_PSC) * (N))
+
+void SystemClock_Config(void);
+void TIM_OC_GPIO_Config(void);
+void TIM_OC_Config(uint16_t);
+
+uint8_t flag = 0;
 
 int main(void) {
-		LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOA);
-		LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOB);
-	
+    LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM4);
 		SystemClock_Config();
-		PA0_EXTI_Config();
-		PD2_EXTI_Config();
-	
-		LL_GPIO_InitTypeDef GPIO_InitStruct = {
-				.Mode = LL_GPIO_MODE_OUTPUT,
-				.Pin = LL_GPIO_PIN_6,
-				.OutputType = LL_GPIO_OUTPUT_PUSHPULL,
-				.Pull = LL_GPIO_PULL_NO,
-				.Speed = LL_GPIO_SPEED_FREQ_HIGH
-		};
-		LL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-		
-		GPIO_InitStruct.Pin = LL_GPIO_PIN_7;
-		LL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-		
-		while(1){
-				//
-		}
-};
+    TIM_OC_Config(ARR_CALCULATE(F_O6));
 
-void PA0_EXTI_Config(void) {
-		LL_APB1_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_SYSCFG);
-		//PA0_EXTI Setup
-		LL_SYSCFG_SetEXTISource(LL_SYSCFG_EXTI_PORTA, LL_SYSCFG_EXTI_LINE0);
-		LL_EXTI_InitTypeDef PA0_EXTI_InitStruct = {
-				.Line_0_31 = LL_EXTI_LINE_0,
-				.LineCommand = ENABLE,
-				.Mode = LL_EXTI_MODE_IT,
-				.Trigger = LL_EXTI_TRIGGER_RISING
-		};
-		LL_EXTI_Init(&PA0_EXTI_InitStruct);
-		//NVIC Setup
-		NVIC_EnableIRQ((IRQn_Type)6);
-		NVIC_SetPriority((IRQn_Type)6, 0);
-}
-
-void PD2_EXTI_Config(void) {
-    LL_APB1_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_SYSCFG);
-    // PD2_EXTI Setup
-    LL_SYSCFG_SetEXTISource(LL_SYSCFG_EXTI_PORTD, LL_SYSCFG_EXTI_LINE2); // ????????????????? EXTI source ???? Port D ??? line 2
-    LL_EXTI_InitTypeDef PD2_EXTI_InitStruct = {
-        .Line_0_31 = LL_EXTI_LINE_2, // ??????? EXTI line ???? line 2
-        .LineCommand = ENABLE,
-        .Mode = LL_EXTI_MODE_IT,
-        .Trigger = LL_EXTI_TRIGGER_RISING
-    };
-    LL_EXTI_Init(&PD2_EXTI_InitStruct);
-    // NVIC Setup
-    NVIC_EnableIRQ(EXTI2_IRQn); // ??????????? EXTI2_IRQn
-    NVIC_SetPriority(EXTI2_IRQn, 0);
-}
-
-void EXTI0_IRQHandler(void) {
-		if(LL_EXTI_IsActiveFlag_0_31(LL_EXTI_LINE_0)) {
-				if(ref_value == 0) {
-						LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_6);
-						LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_7);
-						ref_value = 1;
-				}
-        else {
-						LL_GPIO_ResetOutputPin(GPIOB, LL_GPIO_PIN_6);
-						LL_GPIO_ResetOutputPin(GPIOB, LL_GPIO_PIN_7);
-						ref_value = 0;
-				}
-		}
-		LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_0);
-}
-
-void EXTI2_IRQHandler(void) { // ??????????? ISR ??? EXTI3_IRQHandler ???? EXTI2_IRQHandler
-    if(LL_EXTI_IsActiveFlag_0_31(LL_EXTI_LINE_2)) { // ??????????? EXTI_LINE_2
-        if(ref_value == 0) {
-            LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_6);
-            LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_7);
-            ref_value = 1;
+    while(1) {
+        if (flag == 0) {
+            TIM_OC_Config(ARR_CALCULATE(E_O6)); // Play note E for 3 seconds
+        } else if (flag == 1) {
+            TIM_OC_Config(ARR_CALCULATE(F_O6)); // Play note F for 3 seconds
         }
-        else {
-            LL_GPIO_ResetOutputPin(GPIOB, LL_GPIO_PIN_6);
-            LL_GPIO_ResetOutputPin(GPIOB, LL_GPIO_PIN_7);
-            ref_value = 0;
-        }
+        flag = (flag + 1) % 2;
+        LL_mDelay(3000); // Delay for 3 seconds before changing the note
     }
-    LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_2); // ??????????? EXTI_LINE_2
+}
+
+void TIM_OC_GPIO_Config(void) {
+    LL_GPIO_InitTypeDef gpio_initstructure;
+    LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOB);
+
+    gpio_initstructure.Mode = LL_GPIO_MODE_ALTERNATE;
+    gpio_initstructure.Alternate = LL_GPIO_AF_2;
+    gpio_initstructure.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
+    gpio_initstructure.Pin = LL_GPIO_PIN_9; // PB9
+    gpio_initstructure.Speed = LL_GPIO_SPEED_FREQ_VERY_HIGH;
+
+    LL_GPIO_Init(GPIOB, &gpio_initstructure);
+}
+
+void TIM_OC_Config(uint16_t note) {
+    LL_TIM_InitTypeDef timbase_initstructure;
+    LL_TIM_OC_InitTypeDef tim_oc_initstructure;
+
+    timbase_initstructure.ClockDivision = LL_TIM_CLOCKDIVISION_DIV1;
+    timbase_initstructure.CounterMode = LL_TIM_COUNTERMODE_UP;
+    timbase_initstructure.Autoreload = note - 1;
+    timbase_initstructure.Prescaler = TIMx_PSC- 1;
+
+    LL_TIM_Init(TIM4, &timbase_initstructure);
+    LL_TIM_EnableCounter(TIM4);
+
+    TIM_OC_GPIO_Config();
+
+    tim_oc_initstructure.OCMode = LL_TIM_OCMODE_PWM1;
+    tim_oc_initstructure.OCPolarity = LL_TIM_OCPOLARITY_HIGH;
+    tim_oc_initstructure.CompareValue = note / 2;
+
+    LL_TIM_OC_Init(TIM4, LL_TIM_CHANNEL_CH1, &tim_oc_initstructure);
+
+    LL_TIM_CC_EnableChannel(TIM4, LL_TIM_CHANNEL_CH1);
+    LL_TIM_EnableCounter(TIM4);
 }
 
 void SystemClock_Config(void) {

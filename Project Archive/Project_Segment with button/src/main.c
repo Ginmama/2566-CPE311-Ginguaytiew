@@ -11,38 +11,39 @@
 void SystemClock_Config(void);
 void GPIO_Config(void);
 void TIM_Config(void);
-void PA0_EXTI_Config(void);
-void DisplayNumber(int number);
+void TIM_Config_0(uint16_t note);
+void Sub_TIM_Config_0(uint16_t note);
+void Enable_User_Button(void);
+void DisplayNumber(uint16_t number);
+void External_Button_0(void);
+void External_Button_1(void);
+void Play_Sound(void);
 
-#define BUTTON_PIN LL_GPIO_PIN_3
+#define BUTTON_PIN_0 LL_GPIO_PIN_3
+#define BUTTON_PIN_1 LL_GPIO_PIN_4
+#define TIMx_PSC 3
 
 uint16_t ref_value = 9999; //for adjust value
 uint16_t measureUnit = 0;
-volatile uint8_t button_pressed = 0; // Define a flag variable to indicate button press
+volatile uint8_t button_pressed_0 = 0; // For checking the pressing of external buttons 0
+volatile uint8_t button_pressed_1 = 0; // For checking the pressing of external buttons 1
 
 int main(void)
 {	
-		LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOA);
-		LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOB); 
-		LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOC);
-	
 		SystemClock_Config();
 		GPIO_Config();
 		TIM_Config();
-		PA0_EXTI_Config();
+		Enable_User_Button();
 		NVIC_EnableIRQ(TIM2_IRQn);
 
 		while (1) {
 				DisplayNumber(ref_value);
-				if (LL_GPIO_IsInputPinSet(GPIOB, BUTTON_PIN) == 0 && !button_pressed) {  // Button is pressed (0 = pressed, 1 = released)
-						button_pressed = 1;
-						measureUnit++;	
-						if (measureUnit == 2) {measureUnit = 0;}            					
-        }
+				External_Button_0(); // Change distance measurement unit
+				External_Button_1(); // Shutdown system
 		}
 }
   
-void DisplayNumber(int number) {
+void DisplayNumber(uint16_t number) {
 		uint32_t segType[10] = {
 				// Store segment pattern 0-9
 				/*0*/ LL_GPIO_PIN_2 | LL_GPIO_PIN_10 | LL_GPIO_PIN_11 | LL_GPIO_PIN_12 | LL_GPIO_PIN_13 | LL_GPIO_PIN_14,
@@ -84,6 +85,11 @@ void DisplayNumber(int number) {
 }
 
 void GPIO_Config(void) {
+		// Basic initialize
+		LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOA);
+		LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOB); 
+		LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOC);
+	
     LL_GPIO_InitTypeDef initstruct = {
         .Mode = LL_GPIO_MODE_OUTPUT,
         .OutputType = LL_GPIO_OUTPUT_PUSHPULL,
@@ -91,35 +97,36 @@ void GPIO_Config(void) {
         .Speed = LL_GPIO_SPEED_FREQ_VERY_HIGH
     };
 
-    // Configure GPIOB pins
+    // DisplayNumber (segment)
     initstruct.Pin = LL_GPIO_PIN_2 | LL_GPIO_PIN_10 | LL_GPIO_PIN_11 | LL_GPIO_PIN_12 | LL_GPIO_PIN_13 | LL_GPIO_PIN_14 | LL_GPIO_PIN_15;
     LL_GPIO_Init(GPIOB, &initstruct);
 
-    // Configure GPIOC pins
+    // DisplayNumber (digit)
     initstruct.Pin = LL_GPIO_PIN_0 | LL_GPIO_PIN_1 | LL_GPIO_PIN_2 | LL_GPIO_PIN_3; 
     LL_GPIO_Init(GPIOC, &initstruct);
     
-    // Configure GPIOA input pin
+    // User button pin
     initstruct.Mode = LL_GPIO_MODE_INPUT;
     initstruct.Pin = LL_GPIO_PIN_0;
-    initstruct.Speed = LL_GPIO_SPEED_FREQ_VERY_HIGH;
-    LL_GPIO_Init(GPIOA, &initstruct);
-
-    // Configure GPIOA alternate function pin
-    initstruct.Mode = LL_GPIO_MODE_ALTERNATE;
-    initstruct.Alternate = LL_GPIO_AF_2;
-    initstruct.Pin = LL_GPIO_PIN_5;
     LL_GPIO_Init(GPIOA, &initstruct);
             
-    // Configure another GPIOA input pin
+    /*// Get external data
     initstruct.Mode = LL_GPIO_MODE_INPUT;
     initstruct.Pin = LL_GPIO_PIN_3;
-    initstruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
-    initstruct.Speed = LL_GPIO_SPEED_FREQ_HIGH;
-    LL_GPIO_Init(GPIOA, &initstruct);
+    LL_GPIO_Init(GPIOA, &initstruct);*/
+		
+		// Speaker
+    initstruct.Mode = LL_GPIO_MODE_ALTERNATE;
+    initstruct.Alternate = LL_GPIO_AF_2;
+    initstruct.Pin = LL_GPIO_PIN_6;
+    LL_GPIO_Init(GPIOB, &initstruct);
 
-    LL_GPIO_SetPinMode(GPIOB, BUTTON_PIN, LL_GPIO_MODE_INPUT); // Configure the button pin as input
-    LL_GPIO_SetPinPull(GPIOB, BUTTON_PIN, LL_GPIO_PULL_UP); // Set pull-up resistor for the button pin
+		// Detect external button 0
+    LL_GPIO_SetPinMode(GPIOB, BUTTON_PIN_0, LL_GPIO_MODE_INPUT); // Configure the button pin as input
+    LL_GPIO_SetPinPull(GPIOB, BUTTON_PIN_0, LL_GPIO_PULL_UP); // Set pull-up resistor for the button pin
+		// Detect external button 1
+    LL_GPIO_SetPinMode(GPIOC, BUTTON_PIN_1, LL_GPIO_MODE_INPUT); // Configure the button pin as input
+    LL_GPIO_SetPinPull(GPIOC, BUTTON_PIN_1, LL_GPIO_PULL_UP); // Set pull-up resistor for the button pin
 }
 
 void TIM_Config(void) {
@@ -138,14 +145,15 @@ void TIM_Config(void) {
     LL_TIM_EnableCounter(TIM3);
     
     // Time-base configuration for TIM2
+		// For TIM2_IRQHandler
     LL_TIM_InitTypeDef tim2_initstructure = {
         .Prescaler = 32000 - 1,
         .Autoreload = 750 - 1
     };
     LL_TIM_Init(TIM2, &tim2_initstructure);
     
-    // Enable TIM2 update interrupt and start the counter
-    LL_TIM_EnableIT_UPDATE(TIM2);
+    
+    LL_TIM_EnableIT_UPDATE(TIM2); // Enable TIM2 update interrupt and start the counter
     LL_TIM_EnableCounter(TIM2);
     
     // Output Compare configuration for TIM3
@@ -159,7 +167,42 @@ void TIM_Config(void) {
     LL_TIM_CC_EnableChannel(TIM3, LL_TIM_CHANNEL_CH2);
 }
 
-void PA0_EXTI_Config(void) {
+void TIM_Config_0(uint16_t note) {
+    LL_TIM_OC_InitTypeDef tim_oc_initstructure;
+
+    Sub_TIM_Config_0(note);
+
+    tim_oc_initstructure.OCState = LL_TIM_OCSTATE_DISABLE;
+    tim_oc_initstructure.OCMode = LL_TIM_OCMODE_PWM1;
+    tim_oc_initstructure.OCPolarity = LL_TIM_OCPOLARITY_HIGH;
+    tim_oc_initstructure.CompareValue = LL_TIM_GetAutoReload(TIM4) / 2;
+
+    LL_TIM_OC_Init(TIM4, LL_TIM_CHANNEL_CH1, &tim_oc_initstructure);
+
+    /*Interrupt Configure*/
+    NVIC_SetPriority(TIM4_IRQn, 1);
+    NVIC_EnableIRQ(TIM4_IRQn);
+    LL_TIM_EnableIT_CC1(TIM4);
+
+    /*Start Output Compare in PWM Mode*/
+    LL_TIM_CC_EnableChannel(TIM4, LL_TIM_CHANNEL_CH1);
+}
+
+void Sub_TIM_Config_0(uint16_t note) {
+    LL_TIM_InitTypeDef timbase_initstructure;
+
+    LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM4);
+
+    timbase_initstructure.ClockDivision = LL_TIM_CLOCKDIVISION_DIV1;
+    timbase_initstructure.CounterMode = LL_TIM_COUNTERMODE_UP;
+    timbase_initstructure.Autoreload = note - 1;
+    timbase_initstructure.Prescaler = TIMx_PSC - 1;
+
+    LL_TIM_Init(TIM4, &timbase_initstructure);
+    LL_TIM_EnableCounter(TIM4);
+}
+
+void Enable_User_Button(void) {
 		LL_APB1_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_SYSCFG);
 		//PA0_EXTI Setup
 		LL_SYSCFG_SetEXTISource(LL_SYSCFG_EXTI_PORTA, LL_SYSCFG_EXTI_LINE0);
@@ -174,19 +217,85 @@ void PA0_EXTI_Config(void) {
 		NVIC_EnableIRQ((IRQn_Type)6);
 		NVIC_SetPriority((IRQn_Type)6, 0);
 }
-void EXTI0_IRQHandler(void) {
+
+void External_Button_0(void) { // Change distance measurement unit
+    if (LL_GPIO_IsInputPinSet(GPIOB, BUTTON_PIN_0) == 0 && !button_pressed_0) {  // Button is pressed (0 = pressed, 1 = released)
+				button_pressed_0 = 1;
+				measureUnit++;	
+				if (measureUnit == 2) {measureUnit = 0;}            					
+		}
+}
+
+void External_Button_1(void) { // Shutdown system
+		if (LL_GPIO_IsInputPinSet(GPIOB, BUTTON_PIN_1) == 0 && !button_pressed_1) {
+				LL_GPIO_InitTypeDef GPIO_InitStruct = {
+						.Pin = LL_GPIO_PIN_0 | LL_GPIO_PIN_1 | LL_GPIO_PIN_2 | LL_GPIO_PIN_3,
+						.Mode = LL_GPIO_MODE_INPUT,
+						.Speed = LL_GPIO_SPEED_FREQ_LOW,
+						.OutputType = LL_GPIO_OUTPUT_PUSHPULL,
+						.Pull = LL_GPIO_PULL_NO
+				};
+				LL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+				GPIO_InitStruct.Pin = LL_GPIO_PIN_6;
+				LL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+				__disable_irq();
+				while (1) {} // Empty loop to prevent program from continuing.
+		}
+}
+
+void Play_Sound(void) {
+		#define E_O6 (uint16_t)1318
+		#define note_CALCULATE(N) (SystemCoreClock) / ((TIMx_PSC) * (N))
+    TIM_Config_0(note_CALCULATE(E_O6)); // Configure timer for sound
+}
+
+/*void Play_Sound_Delay(void) {
+    // Calculate the Autoreload value for 200 ms
+    // Assuming TIMx_PSC is 1 (Prescaler = 1)
+    uint32_t period = (SystemCoreClock / 1000) * 200 / 1; 
+    
+    // Initialize timer configuration
+    LL_TIM_InitTypeDef TIM_InitStruct;
+    LL_TIM_StructInit(&TIM_InitStruct);
+    TIM_InitStruct.Prescaler = 1 - 1; // Prescaler = 1
+    TIM_InitStruct.CounterMode = LL_TIM_COUNTERMODE_UP;
+    TIM_InitStruct.Autoreload = period - 1; // Set timer period
+    LL_TIM_Init(TIM4, &TIM_InitStruct);
+    
+    // Enable timer update interrupt
+    LL_TIM_EnableIT_UPDATE(TIM4);
+    
+    // Start the timer
+    LL_TIM_EnableCounter(TIM4);
+	
+		while (!LL_TIM_IsActiveFlag_UPDATE(TIM4)) {}
+    LL_TIM_ClearFlag_UPDATE(TIM4);
+}*/
+
+//<---------------Any can't rename function--------------->
+void EXTI0_IRQHandler(void) { // User button
 		if(LL_EXTI_IsActiveFlag_0_31(LL_EXTI_LINE_0) == SET) {
-				/*ref_value = (GPIOA->IDR & LL_GPIO_PIN_3);
-				LL_TIM_OC_SetCompareCH2(TIM3, ref_value);*/
+				//ref_value = (GPIOA->IDR & LL_GPIO_PIN_3);
+				Play_Sound();
 				ref_value--;
 		}
 		LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_0);
 }
 
-void TIM2_IRQHandler(void) {
+void TIM2_IRQHandler(void) { // For run command continuous
     if (LL_TIM_IsActiveFlag_UPDATE(TIM2)) { // ?????????????????????? Interrupt ??? Update Event ???????
-				button_pressed = 0;
+				button_pressed_0 = 0;
+				button_pressed_1 = 0;
+				LL_TIM_DisableCounter(TIM4);
         LL_TIM_ClearFlag_UPDATE(TIM2); // ?????? Flag ??? Update Event
+    }
+}
+
+void TIM4_IRQHandler(void) { // For speaker time counter
+    if(LL_TIM_IsActiveFlag_CC1(TIM4) == SET) {
+        LL_TIM_ClearFlag_CC1(TIM4);
+        LL_mDelay(25);
+        LL_TIM_DisableCounter(TIM4); // Stop sound
     }
 }
 
