@@ -12,7 +12,7 @@ Section Cross References
     startup_stm32l152xb.o(RESET) refers to startup_stm32l152xb.o(STACK) for __initial_sp
     startup_stm32l152xb.o(RESET) refers to startup_stm32l152xb.o(.text) for Reset_Handler
     startup_stm32l152xb.o(RESET) refers to main.o(i.EXTI0_IRQHandler) for EXTI0_IRQHandler
-    startup_stm32l152xb.o(RESET) refers to main.o(i.EXTI3_IRQHandler) for EXTI3_IRQHandler
+    startup_stm32l152xb.o(RESET) refers to main.o(i.EXTI2_IRQHandler) for EXTI2_IRQHandler
     startup_stm32l152xb.o(.text) refers (Special) to heapauxi.o(.text) for __use_two_region_memory
     startup_stm32l152xb.o(.text) refers to system_stm32l1xx.o(i.SystemInit) for SystemInit
     startup_stm32l152xb.o(.text) refers to __main.o(!!!main) for __main
@@ -23,23 +23,23 @@ Section Cross References
     main.o(i.EXTI0_IRQHandler) refers to main.o(i.LL_GPIO_ResetOutputPin) for LL_GPIO_ResetOutputPin
     main.o(i.EXTI0_IRQHandler) refers to main.o(i.LL_EXTI_ClearFlag_0_31) for LL_EXTI_ClearFlag_0_31
     main.o(i.EXTI0_IRQHandler) refers to main.o(.data) for ref_value
-    main.o(i.EXTI3_IRQHandler) refers to main.o(i.LL_EXTI_IsActiveFlag_0_31) for LL_EXTI_IsActiveFlag_0_31
-    main.o(i.EXTI3_IRQHandler) refers to main.o(i.LL_GPIO_SetOutputPin) for LL_GPIO_SetOutputPin
-    main.o(i.EXTI3_IRQHandler) refers to main.o(i.LL_GPIO_ResetOutputPin) for LL_GPIO_ResetOutputPin
-    main.o(i.EXTI3_IRQHandler) refers to main.o(i.LL_EXTI_ClearFlag_0_31) for LL_EXTI_ClearFlag_0_31
-    main.o(i.EXTI3_IRQHandler) refers to main.o(.data) for ref_value
+    main.o(i.EXTI2_IRQHandler) refers to main.o(i.LL_EXTI_IsActiveFlag_0_31) for LL_EXTI_IsActiveFlag_0_31
+    main.o(i.EXTI2_IRQHandler) refers to main.o(i.LL_GPIO_SetOutputPin) for LL_GPIO_SetOutputPin
+    main.o(i.EXTI2_IRQHandler) refers to main.o(i.LL_GPIO_ResetOutputPin) for LL_GPIO_ResetOutputPin
+    main.o(i.EXTI2_IRQHandler) refers to main.o(i.LL_EXTI_ClearFlag_0_31) for LL_EXTI_ClearFlag_0_31
+    main.o(i.EXTI2_IRQHandler) refers to main.o(.data) for ref_value
     main.o(i.PA0_EXTI_Config) refers to main.o(i.LL_APB1_GRP1_EnableClock) for LL_APB1_GRP1_EnableClock
     main.o(i.PA0_EXTI_Config) refers to main.o(i.LL_SYSCFG_SetEXTISource) for LL_SYSCFG_SetEXTISource
     main.o(i.PA0_EXTI_Config) refers to stm32l1xx_ll_exti.o(i.LL_EXTI_Init) for LL_EXTI_Init
     main.o(i.PA0_EXTI_Config) refers to main.o(i.NVIC_EnableIRQ) for NVIC_EnableIRQ
     main.o(i.PA0_EXTI_Config) refers to main.o(i.NVIC_SetPriority) for NVIC_SetPriority
     main.o(i.PA0_EXTI_Config) refers to main.o(.constdata) for .constdata
-    main.o(i.PB3_EXTI_Config) refers to main.o(i.LL_APB1_GRP1_EnableClock) for LL_APB1_GRP1_EnableClock
-    main.o(i.PB3_EXTI_Config) refers to main.o(i.LL_SYSCFG_SetEXTISource) for LL_SYSCFG_SetEXTISource
-    main.o(i.PB3_EXTI_Config) refers to stm32l1xx_ll_exti.o(i.LL_EXTI_Init) for LL_EXTI_Init
-    main.o(i.PB3_EXTI_Config) refers to main.o(i.NVIC_EnableIRQ) for NVIC_EnableIRQ
-    main.o(i.PB3_EXTI_Config) refers to main.o(i.NVIC_SetPriority) for NVIC_SetPriority
-    main.o(i.PB3_EXTI_Config) refers to main.o(.constdata) for .constdata
+    main.o(i.PD2_EXTI_Config) refers to main.o(i.LL_APB1_GRP1_EnableClock) for LL_APB1_GRP1_EnableClock
+    main.o(i.PD2_EXTI_Config) refers to main.o(i.LL_SYSCFG_SetEXTISource) for LL_SYSCFG_SetEXTISource
+    main.o(i.PD2_EXTI_Config) refers to stm32l1xx_ll_exti.o(i.LL_EXTI_Init) for LL_EXTI_Init
+    main.o(i.PD2_EXTI_Config) refers to main.o(i.NVIC_EnableIRQ) for NVIC_EnableIRQ
+    main.o(i.PD2_EXTI_Config) refers to main.o(i.NVIC_SetPriority) for NVIC_SetPriority
+    main.o(i.PD2_EXTI_Config) refers to main.o(.constdata) for .constdata
     main.o(i.SystemClock_Config) refers to main.o(i.LL_APB1_GRP1_EnableClock) for LL_APB1_GRP1_EnableClock
     main.o(i.SystemClock_Config) refers to main.o(i.LL_RCC_HSI_IsReady) for LL_RCC_HSI_IsReady
     main.o(i.SystemClock_Config) refers to stm32l1xx_ll_utils.o(i.LL_Init1msTick) for LL_Init1msTick
@@ -47,7 +47,7 @@ Section Cross References
     main.o(i.main) refers to main.o(i.LL_AHB1_GRP1_EnableClock) for LL_AHB1_GRP1_EnableClock
     main.o(i.main) refers to main.o(i.SystemClock_Config) for SystemClock_Config
     main.o(i.main) refers to main.o(i.PA0_EXTI_Config) for PA0_EXTI_Config
-    main.o(i.main) refers to main.o(i.PB3_EXTI_Config) for PB3_EXTI_Config
+    main.o(i.main) refers to main.o(i.PD2_EXTI_Config) for PD2_EXTI_Config
     main.o(i.main) refers to rt_memcpy_w.o(.text) for __aeabi_memcpy4
     main.o(i.main) refers to stm32l1xx_ll_gpio.o(i.LL_GPIO_Init) for LL_GPIO_Init
     main.o(i.main) refers to main.o(.constdata) for .constdata
@@ -502,7 +502,7 @@ Image Symbol Table
     .text                                    0x080002ac   Section        2  use_no_semi.o(.text)
     .text                                    0x080002ae   Section        0  indicate_semi.o(.text)
     i.EXTI0_IRQHandler                       0x080002b0   Section        0  main.o(i.EXTI0_IRQHandler)
-    i.EXTI3_IRQHandler                       0x08000300   Section        0  main.o(i.EXTI3_IRQHandler)
+    i.EXTI2_IRQHandler                       0x08000300   Section        0  main.o(i.EXTI2_IRQHandler)
     i.LL_AHB1_GRP1_EnableClock               0x08000350   Section        0  main.o(i.LL_AHB1_GRP1_EnableClock)
     LL_AHB1_GRP1_EnableClock                 0x08000351   Thumb Code    24  main.o(i.LL_AHB1_GRP1_EnableClock)
     i.LL_APB1_GRP1_EnableClock               0x0800036c   Section        0  main.o(i.LL_APB1_GRP1_EnableClock)
@@ -540,7 +540,7 @@ Image Symbol Table
     i.NVIC_SetPriority                       0x08000694   Section        0  main.o(i.NVIC_SetPriority)
     NVIC_SetPriority                         0x08000695   Thumb Code    32  main.o(i.NVIC_SetPriority)
     i.PA0_EXTI_Config                        0x080006bc   Section        0  main.o(i.PA0_EXTI_Config)
-    i.PB3_EXTI_Config                        0x080006f0   Section        0  main.o(i.PB3_EXTI_Config)
+    i.PD2_EXTI_Config                        0x080006f0   Section        0  main.o(i.PD2_EXTI_Config)
     i.SystemClock_Config                     0x08000724   Section        0  main.o(i.SystemClock_Config)
     i.SystemInit                             0x08000850   Section        0  system_stm32l1xx.o(i.SystemInit)
     i.main                                   0x080008b4   Section        0  main.o(i.main)
@@ -667,7 +667,7 @@ Image Symbol Table
     DMA1_Channel7_IRQHandler                 0x080001ab   Thumb Code     0  startup_stm32l152xb.o(.text)
     EXTI15_10_IRQHandler                     0x080001ab   Thumb Code     0  startup_stm32l152xb.o(.text)
     EXTI1_IRQHandler                         0x080001ab   Thumb Code     0  startup_stm32l152xb.o(.text)
-    EXTI2_IRQHandler                         0x080001ab   Thumb Code     0  startup_stm32l152xb.o(.text)
+    EXTI3_IRQHandler                         0x080001ab   Thumb Code     0  startup_stm32l152xb.o(.text)
     EXTI4_IRQHandler                         0x080001ab   Thumb Code     0  startup_stm32l152xb.o(.text)
     EXTI9_5_IRQHandler                       0x080001ab   Thumb Code     0  startup_stm32l152xb.o(.text)
     FLASH_IRQHandler                         0x080001ab   Thumb Code     0  startup_stm32l152xb.o(.text)
@@ -716,13 +716,13 @@ Image Symbol Table
     __use_no_semihosting_swi                 0x080002ad   Thumb Code     2  use_no_semi.o(.text)
     __semihosting_library_function           0x080002af   Thumb Code     0  indicate_semi.o(.text)
     EXTI0_IRQHandler                         0x080002b1   Thumb Code    70  main.o(i.EXTI0_IRQHandler)
-    EXTI3_IRQHandler                         0x08000301   Thumb Code    70  main.o(i.EXTI3_IRQHandler)
+    EXTI2_IRQHandler                         0x08000301   Thumb Code    70  main.o(i.EXTI2_IRQHandler)
     LL_EXTI_Init                             0x080003f5   Thumb Code   184  stm32l1xx_ll_exti.o(i.LL_EXTI_Init)
     LL_GPIO_Init                             0x080004c9   Thumb Code   324  stm32l1xx_ll_gpio.o(i.LL_GPIO_Init)
     LL_Init1msTick                           0x08000617   Thumb Code    28  stm32l1xx_ll_utils.o(i.LL_Init1msTick)
     LL_SetSystemCoreClock                    0x08000671   Thumb Code     6  stm32l1xx_ll_utils.o(i.LL_SetSystemCoreClock)
     PA0_EXTI_Config                          0x080006bd   Thumb Code    48  main.o(i.PA0_EXTI_Config)
-    PB3_EXTI_Config                          0x080006f1   Thumb Code    48  main.o(i.PB3_EXTI_Config)
+    PD2_EXTI_Config                          0x080006f1   Thumb Code    48  main.o(i.PD2_EXTI_Config)
     SystemClock_Config                       0x08000725   Thumb Code   282  main.o(i.SystemClock_Config)
     SystemInit                               0x08000851   Thumb Code    82  system_stm32l1xx.o(i.SystemInit)
     main                                     0x080008b5   Thumb Code    60  main.o(i.main)
@@ -808,7 +808,7 @@ Memory Map of the image
     0x080002ae   0x080002ae   0x00000000   Code   RO         1035    .text               c_w.l(indicate_semi.o)
     0x080002ae   0x080002ae   0x00000002   PAD
     0x080002b0   0x080002b0   0x00000050   Code   RO           73    i.EXTI0_IRQHandler  main.o
-    0x08000300   0x08000300   0x00000050   Code   RO           74    i.EXTI3_IRQHandler  main.o
+    0x08000300   0x08000300   0x00000050   Code   RO           74    i.EXTI2_IRQHandler  main.o
     0x08000350   0x08000350   0x0000001c   Code   RO           75    i.LL_AHB1_GRP1_EnableClock  main.o
     0x0800036c   0x0800036c   0x0000001c   Code   RO           76    i.LL_APB1_GRP1_EnableClock  main.o
     0x08000388   0x08000388   0x0000000c   Code   RO           77    i.LL_EXTI_ClearFlag_0_31  main.o
@@ -832,7 +832,7 @@ Memory Map of the image
     0x08000692   0x08000692   0x00000002   PAD
     0x08000694   0x08000694   0x00000028   Code   RO           84    i.NVIC_SetPriority  main.o
     0x080006bc   0x080006bc   0x00000034   Code   RO           85    i.PA0_EXTI_Config   main.o
-    0x080006f0   0x080006f0   0x00000034   Code   RO           86    i.PB3_EXTI_Config   main.o
+    0x080006f0   0x080006f0   0x00000034   Code   RO           86    i.PD2_EXTI_Config   main.o
     0x08000724   0x08000724   0x0000012c   Code   RO           87    i.SystemClock_Config  main.o
     0x08000850   0x08000850   0x00000064   Code   RO            5    i.SystemInit        system_stm32l1xx.o
     0x080008b4   0x080008b4   0x00000044   Code   RO           88    i.main              main.o

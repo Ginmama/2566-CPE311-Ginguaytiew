@@ -17,6 +17,7 @@
 
   <project>
     <PathAndName>.\Project_Segment with button\MDK-ARM\Segment with button.uvprojx</PathAndName>
+    <NodeIsActive>1</NodeIsActive>
     <NodeIsExpanded>1</NodeIsExpanded>
   </project>
 
@@ -34,11 +35,11 @@
 
   <project>
     <PathAndName>.\Project_Temporary_Test\MDK-ARM\Temporary_Test.uvprojx</PathAndName>
+    <NodeIsExpanded>1</NodeIsExpanded>
   </project>
 
   <project>
     <PathAndName>.\Project_Temporary_Test1\MDK-ARM\Temporary_Test_1.uvprojx</PathAndName>
-    <NodeIsActive>1</NodeIsActive>
     <NodeIsExpanded>1</NodeIsExpanded>
   </project>
 

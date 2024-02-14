@@ -14,7 +14,11 @@ void TIM_Config(void);
 void PA0_EXTI_Config(void);
 void DisplayNumber(int number);
 
-uint16_t ref_value = 9876; //for adjust value
+#define BUTTON_PIN LL_GPIO_PIN_3
+
+uint16_t ref_value = 9999; //for adjust value
+uint16_t measureUnit = 0;
+volatile uint8_t button_pressed = 0; // Define a flag variable to indicate button press
 
 int main(void)
 {	
@@ -29,7 +33,12 @@ int main(void)
 		NVIC_EnableIRQ(TIM2_IRQn);
 
 		while (1) {
-				DisplayNumber(ref_value);	
+				DisplayNumber(ref_value);
+				if (LL_GPIO_IsInputPinSet(GPIOB, BUTTON_PIN) == 0 && !button_pressed) {  // Button is pressed (0 = pressed, 1 = released)
+						button_pressed = 1;
+						if (measureUnit == 1) {measureUnit = 0;}
+            measureUnit++;						
+        }
 		}
 }
   
@@ -50,10 +59,14 @@ void DisplayNumber(int number) {
 		uint32_t temporary_Seg[4] = {0}; // Store all input number
 		uint32_t digit_Control[4] = {LL_GPIO_PIN_0, LL_GPIO_PIN_1, LL_GPIO_PIN_2, LL_GPIO_PIN_3}; // Store all digit pins
 		
-		if (number >= 1000) {temporary_Seg[0] = segType[number / 1000];} // Thousands
-		if (number >= 100) {temporary_Seg[1] = segType[number % 1000 / 100];} // Hundreds
-		if (number >= 10) {temporary_Seg[2] = segType[(number % 100) / 10];} // Tens
-		temporary_Seg[3] = segType[number % 10]; // Units
+		uint16_t measureTemp;
+		measureTemp = number;
+		if (measureUnit == 1) {measureTemp = measureTemp / 10;}
+		
+		if (measureTemp >= 1000) {temporary_Seg[0] = segType[measureTemp / 1000];} // Thousands
+		if (measureTemp >= 100) {temporary_Seg[1] = segType[measureTemp % 1000 / 100];} // Hundreds
+		if (measureTemp >= 10) {temporary_Seg[2] = segType[(measureTemp % 100) / 10];} // Tens
+		temporary_Seg[3] = segType[measureTemp % 10]; // Units
 
     for (uint8_t i = 0; i < 4; ++i) {
         // Turn off all digits and segments
@@ -104,6 +117,9 @@ void GPIO_Config(void) {
     initstruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
     initstruct.Speed = LL_GPIO_SPEED_FREQ_HIGH;
     LL_GPIO_Init(GPIOA, &initstruct);
+
+    LL_GPIO_SetPinMode(GPIOB, BUTTON_PIN, LL_GPIO_MODE_INPUT); // Configure the button pin as input
+    LL_GPIO_SetPinPull(GPIOB, BUTTON_PIN, LL_GPIO_PULL_UP); // Set pull-up resistor for the button pin
 }
 
 void TIM_Config(void) {
@@ -124,7 +140,7 @@ void TIM_Config(void) {
     // Time-base configuration for TIM2
     LL_TIM_InitTypeDef tim2_initstructure = {
         .Prescaler = 32000 - 1,
-        .Autoreload = 1000 - 1
+        .Autoreload = 750 - 1
     };
     LL_TIM_Init(TIM2, &tim2_initstructure);
     
@@ -160,17 +176,17 @@ void PA0_EXTI_Config(void) {
 }
 void EXTI0_IRQHandler(void) {
 		if(LL_EXTI_IsActiveFlag_0_31(LL_EXTI_LINE_0) == SET) {
-				ref_value = (GPIOA->IDR & LL_GPIO_PIN_3);
-				LL_TIM_OC_SetCompareCH2(TIM3, ref_value);
+				/*ref_value = (GPIOA->IDR & LL_GPIO_PIN_3);
+				LL_TIM_OC_SetCompareCH2(TIM3, ref_value);*/
+				ref_value--;
 		}
 		LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_0);
 }
 
 void TIM2_IRQHandler(void) {
-    if (LL_TIM_IsActiveFlag_UPDATE(TIM2)) { // Check if interrupt is triggered by Update Event
-        LL_TIM_ClearFlag_UPDATE(TIM2); // Reset Update Event flag
-        // Decrease the value of a variable by 1
-        ref_value--;
+    if (LL_TIM_IsActiveFlag_UPDATE(TIM2)) { // ?????????????????????? Interrupt ??? Update Event ???????
+				button_pressed = 0;
+        LL_TIM_ClearFlag_UPDATE(TIM2); // ?????? Flag ??? Update Event
     }
 }
 
