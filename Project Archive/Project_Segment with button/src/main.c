@@ -36,8 +36,8 @@ int main(void)
 				DisplayNumber(ref_value);
 				if (LL_GPIO_IsInputPinSet(GPIOB, BUTTON_PIN) == 0 && !button_pressed) {  // Button is pressed (0 = pressed, 1 = released)
 						button_pressed = 1;
-						if (measureUnit == 1) {measureUnit = 0;}
-            measureUnit++;						
+						measureUnit++;	
+						if (measureUnit == 2) {measureUnit = 0;}            					
         }
 		}
 }
