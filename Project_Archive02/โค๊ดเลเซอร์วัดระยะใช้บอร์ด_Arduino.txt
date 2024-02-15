@@ -1,0 +1,25 @@
+#include <SoftwareSerial.h>
+#include <VL53L0X.h>
+
+#define BAUD_RATE 115200
+
+// Define software serial pins (e.g., pins 8 and 9)
+SoftwareSerial mySerial(0, 1);
+
+VL53L0X sensor;
+
+void setup() {
+  mySerial.begin(BAUD_RATE);
+  Wire.begin();
+  sensor.init();
+  sensor.setTimeout(500);
+  sensor.startContinuous();
+}
+
+void loop() {
+  int distance = sensor.readRangeContinuousMillimeters();
+  mySerial.print("Distance: ");
+  mySerial.print(distance);
+  mySerial.println("mm");
+  delay(1000);
+}
